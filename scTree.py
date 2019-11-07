@@ -33,8 +33,8 @@ def getPath(path):
 
 
 def main():
-    usage = "usage: python %prog <-P path> <-I input> <-O output>"
-    description = "Input integer copy number profile. Columns correspond to chromosomal position. Rows correspond to cell or clonal ID"
+    usage = "usage: python %prog <-P path> <-I input> <-D datatype>"
+    description = "Input integer copy number profile. Columns correspond to chromosomal position. Rows correspond to cells."
     op = OptionParser(version="%prog 1.0",description=description,usage=usage,add_help_option=False)
     op.add_option("-h","--help",action="help",
                   help="Show this help message and exit.")

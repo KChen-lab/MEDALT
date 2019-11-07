@@ -12,7 +12,7 @@ This package runs on Python 2.7.
 It also requires R 3.5
 to run and has dependency on the R packages:
 
-	igraph, HelloRanger and DescTools.
+	igraph, HelloRanges and DescTools.
 
 
 
@@ -82,11 +82,11 @@ Examples
 ========
 Try RDMST in the package directory on the different example datasets
 
-**Example 1: Input from scDNA-seq data**
+**Example 1: Input copy number profile from scDNA-seq data**
 
 	python scTree.py -P ./ -I ./example/scDNA.CNV.txt -D D -O ./example/output
 
-**Example 2: Input from scRNA-seq data**
+**Example 2: Input copy number profile from scRNA-seq data**
 
 	python scTree.py -P ./ -I ./example/scRNA.inferCNV.txt -D R -O ./example/output1 -W 30
 
