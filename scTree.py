@@ -85,7 +85,7 @@ def main():
     print "Inferring RDMST."
     (nodes,root) = read(CNVfile)
     node_name_list = nodes.keys()
-    g = create_tree(nodes, node_name_list)
+    g = create_tree(nodes, node_name_list,root)
     result = compute_rdmst(g, root)
     write=open(writename,'w')
     tree=result[0]

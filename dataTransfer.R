@@ -33,10 +33,11 @@ RNAinput <- function(inputfile, reference, delt){
   chro[chro=="X"]=23
   newdata[,1]=chro
   newdata=newdata[newdata[,1]!="M"&newdata[,1]!="Y",]
-  chro=c(1:23)
+  chrom=c(1:23)
+  chrom=intersect(chrom,chro)
   segdata=c()
   chrregion=c()
-  for (i in 1:23){
+  for (i in chrom){
     subseg=c()
     subdata=newdata[newdata[,1]==i,]
     subdata=subdata[order(as.numeric(as.character(subdata[,2]))),]

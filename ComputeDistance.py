@@ -12,11 +12,9 @@ def matrixbuilder(node):
 
 
 def dist(node1, node2):
-#    assert len(node1) == 23
-#    assert len(node2) == 23
     d = 0
     for i in range(0, len(node1)):
-        d += disthelper(node1[i], node2[i])
+        d = d+ disthelper(node1[i], node2[i])
     return d
 
 def disthelper(node1, node2):

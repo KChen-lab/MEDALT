@@ -16,19 +16,14 @@ class Tree:
         return len(self.in_edge)
 
 
-def create_tree(nodes, node_name_list):
-    num_calc = 0
+def create_tree(nodes, node_name_list,root):
     tree_node_dict = {}
     for node in node_name_list:
         temp_out_edge = {}
+        temp_in_edge = {}
         for other_node in node_name_list:
             if not node == other_node:
                 temp_out_edge[other_node] = dist(nodes[node], nodes[other_node])
-                num_calc += 1
-                if (num_calc % 10000 == 0):
-                    print("did " + str(num_calc) + " computation.")
-        if len(temp_out_edge) < 1000:
-            tree_node_dict[node] = temp_out_edge
-        else:
-            tree_node_dict[node] = sorted(temp_out_edge)[:100]
+                temp_in_edge[other_node] = dist(nodes[other_node], nodes[node])
+        tree_node_dict[node] = temp_out_edge
     return tree_node_dict

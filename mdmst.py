@@ -4,7 +4,6 @@
 
 from collections import *
 from copy import *
-import pickle
 
 def reverse_digraph_representation(graph):
     """
@@ -363,7 +362,7 @@ def compute_rdmst(graph, root):
             print "The root does not reach every other node in the graph"
             return
 
-    rdmst = compute_rdmst_helper(graph, root, 1)
+    rdmst = compute_rdmst_helper(graph, root)
 
     # reassign the original edge weights to the RDMST and computes the total
     # weight of the RDMST
@@ -376,7 +375,7 @@ def compute_rdmst(graph, root):
     return (rdmst,rdmst_weight)
 
 
-def compute_rdmst_helper(graph, root, index):
+def compute_rdmst_helper(graph,root):
     """
         Computes the RDMST of a weighted digraph rooted at node root.
         It is assumed that:
@@ -417,20 +416,8 @@ def compute_rdmst_helper(graph, root, index):
         (contracted_g, cstar) = contract_cycle(g_copy, cycle)
         #cstar = max(contracted_g.keys())
 
-        with open(str(index) + '.txt', 'wb') as cache:
-            pickle.dump(rgraph, cache)
-
-        del graph, rgraph, rdst_candidate, g_copy
-
-        print("contracting cycle " + str(index))
-
         # Step 4(b) of the algorithm
-        new_rdst_candidate = compute_rdmst_helper(contracted_g, root, index + 1)
-
-        with open(str(index) + '.txt', 'rb') as cache:
-            rgraph = pickle.loads(cache.read())
-
-        print("expanding cycle " + str(index))
+        new_rdst_candidate = compute_rdmst_helper(contracted_g, root)
 
         # Step 4(c) of the algorithm
         rdmst = expand_graph(reverse_digraph_representation(rgraph), new_rdst_candidate, cycle, cstar)
