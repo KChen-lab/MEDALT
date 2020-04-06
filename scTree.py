@@ -97,8 +97,8 @@ def main():
             out1=out+"\t"+value+"\t"+str(tree[ele][value])
             print >> write,out1
     write.close()
-    print "RDMST inferrence finished."
-    print "Identififying lineage specific CNAs."
+    print "MEDALT inferrence finished."
+    print "Performing LSA."
     os.system("Rscript "+scTreepath+"LSA.tree.R "+scTreepath+" "+filename+" "+writename+" "+CNVfile+" "+outpath+" "+datatype)
     os.chdir(outpath)
     os.system("rm -r temp")
