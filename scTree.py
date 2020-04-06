@@ -47,7 +47,7 @@ def main():
     op.add_option("-D","--Datatype",dest="Datatype",type="str",
                   help="Output path")
     op.add_option("-W","--Windows",dest="Windows",type="str",
-                  help="the number of genes you want to merge when you input copy number profile inferred from scRNA-seq")
+                  help="the number of genes you want to merge when you input copy number profile inferred from scRNA-seq. Default 30.")
 
     (options,args) = op.parse_args()
     if not options.Path or not options.Input or not options.Datatype:
@@ -74,7 +74,7 @@ def main():
         os.system("Rscript "+scTreepath+"dataTransfer.R "+filename+" "+datatype)
     elif datatype == "R":
         if not options.Windows:
-            print "Please the number of genes which are merger into the bin is default value 20. If you want change it please specify the value through -W"
+            print "The number of genes which are merger into the bin is default value 30. If you want change it please specify the value through -W"
             delt = str(20)
         else:
             delt=options.Windows
