@@ -75,7 +75,7 @@ def main():
     elif datatype == "R":
         if not options.Windows:
             print "The number of genes which are merger into the bin is default value 30. If you want change it please specify the value through -W"
-            delt = str(20)
+            delt = str(30)
         else:
             delt=options.Windows
         os.system("Rscript "+scTreepath+"dataTransfer.R "+filename+" "+datatype+" "+scTreepath+" "+delt)
