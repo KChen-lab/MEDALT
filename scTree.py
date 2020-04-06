@@ -82,7 +82,7 @@ def main():
     else:
         print "Please provide the correct inputfile type through -D either 'D' or 'R'."
     CNVfile=filename+".CNV.txt"
-    print "Inferring RDMST."
+    print "Inferring MEDALT."
     (nodes,root) = read(CNVfile)
     node_name_list = nodes.keys()
     g = create_tree(nodes, node_name_list,root)
