@@ -105,7 +105,7 @@ Three text files:
 
 Two figures:
 
-	(1) singlecell.tree.pdf: the MEDALT of cells visualized by igraph. You can incorporate CNV.tree.txt with Cytoscape to generate prefered visualization of tree.
+	(1) singlecell.tree.pdf: the MEDALT of cells visualized by igraph. You can input CNV.tree.txt into Cytoscape to generate preferred visualization.
 
 	(2) LSA.tree.pdf: the tree visualization of fitness-associated CNAs by igraph
 
