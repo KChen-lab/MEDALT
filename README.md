@@ -97,7 +97,7 @@ Output files
 
 Three text files:
 
-	(1) CNV.tree.txt file: an rooted directed tree in which the first column is parent node, the second column is child and the last column is distance
+	(1) CNV.tree.txt file: an rooted directed tree includes three columns: parent node, child node and distance
 
 	(2) segmental.LSA.txt file: significant broad fitness-associated CNAs
 
