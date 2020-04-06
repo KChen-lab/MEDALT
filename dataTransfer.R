@@ -1,6 +1,6 @@
 ####transfer format of input data
 ##Input integer copy number profile with header from scDNA-seq, separeted by tab.
-##The row in DNA input data is chromosomal bin. The range of chromosome is from 1 to 23.
+##The row in DNA input data is chromosomal segment. The range of chromosome is from 1 to 23.
 ##The first column is chromosome, the second column is the start position of bin, and the following columns are sequenced cells.
 DNAinput <- function(inputfile){
   data=read.csv(inputfile,sep="\t")
@@ -9,7 +9,7 @@ DNAinput <- function(inputfile){
   for (i in 1:length(region)){
     regionseq=c(regionseq,c(1:region[i]))
   }
-  row.names(data)=paste("chr",data$chrom,"_",regionseq,sep="")
+  row.names(data)=paste("chr",data[,1],"_",regionseq,sep="")
   CNV=data[,3:dim(data)[2]]
   CNV=t(CNV)
   write.table(CNV, paste(inputfile,".CNV.txt",sep=""), sep = "\t",col.names = TRUE, row.names = TRUE, quote = FALSE)
