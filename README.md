@@ -101,9 +101,7 @@ Three text files:
 
 	(2) segmental.LSA.txt file: significant broad fitness-associated CNAs
 
-	(3) gene.LSA.txt file: significant focal fitness-associated CNAs. MEDALT includes
-                          more than 400 cancer associated genes which are from 11 oncigenic pathways:
-                          DDR, Notch, PI3K, Hippo, RTK/RAS, MYC, p53, Nrf2, TGFB, Wnt and cellcycle.
+	(3) gene.LSA.txt file: significant focal fitness-associated CNAs. 
 
 Two figures:
 
