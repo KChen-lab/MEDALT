@@ -1,7 +1,7 @@
 Description
 ===========
 This package is to infer Minimal Event Distance Aneuploidy Lineage Tree (MEDALT) using integer copy number profile from single cell sequencing technology. It will infer:
-* An rooted directed minimal spanning tree to represent aneuploidy evolution of tumor cells
+* An rooted directed minimal spanning tree (RDMST) to represent aneuploidy evolution of tumor cells
 * The focal and broad copy number alterations associated with lineage expansion
 
 
@@ -97,7 +97,7 @@ Output files
 
 Three text files:
 
-	(1) CNV.tree.txt file: an rooted directed tree and the visualization of the tree
+	(1) CNV.tree.txt file: an rooted directed tree in which the first column is parent node, the second column is child and the last column is distance
 
 	(2) segmental.LSA.txt file: significant broad fitness-associated CNAs
 
