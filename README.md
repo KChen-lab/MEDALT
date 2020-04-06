@@ -85,11 +85,11 @@ Try MEDALT in the package directory on the different example datasets
 
 **Example 1: Input integer copy number profile from scDNA-seq data**
 
-	python scTree.py -P ./ -I ./example/scDNA.CNV.txt -D D -O ./example/output
+	python scTree.py -P ./ -I ./example/scDNA.CNV.txt -D D -O ./example/output1
 
 **Example 2: Input integer copy number profile from scRNA-seq data**
 
-	python scTree.py -P ./ -I ./example/scRNA.inferCNV.txt -D R -O ./example/output1
+	python scTree.py -P ./ -I ./example/scRNA.inferCNV.txt -D R -O ./example/output2
 
 
 Output files
@@ -101,7 +101,7 @@ Three text files:
 
 	(2) segmental.LSA.txt file: significant broad fitness-associated CNAs
 
-	(3) gene.LSA.txt file: significant focal fitness-associated CNAs. 
+	(3) gene.LSA.txt file: significant focal fitness-associated CNAs.
 
 Two figures:
 
