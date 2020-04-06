@@ -74,44 +74,33 @@ splitTree <- function(node,celltree){
   return(child)
 }
 
-#######Association test
-MonotoneTest <- function(j,data){
-  model1=wilcox.test(as.numeric(data[data$cohort==0,j]),as.numeric(data[data$cohort==1,j]))
-  return(model1$p.value)
+#######Calculate CFL score
+lineageScore <- function(node,newCNV,celltree){
+  child=splitTree(node,celltree)
+  index=match(child,row.names(newCNV))
+  subcnv=newCNV[index,]
+  Gscore=apply(subcnv,2,function(x){
+    f1=length(x[x>2])
+    f2=length(x[x<2])
+    if (f1>1){
+      Gamp=f1*mean(x[x>2]-2)/length(x)
+    }else if (f1==1){
+      Gamp=f1*(x[x>2]-2)/length(x)
+    }else{
+      Gamp=f1
+    }
+    if (f2>1){
+      Gdel=f2*mean(x[x<2]-2)/length(x)
+    }else if (f2 == 1){
+      Gdel=f2*(x[x<2]-2)/length(x)
+    }else{
+      Gdel=f2
+    }
+    return(c(Gamp,Gdel))
+  })
+  return(Gscore)
 }
 
-TrendTest <- function(j,data){
-  tab=table(data[,j], data$cohort)
-  model2=CochranArmitageTest(tab)
-  return(model2$p.value)
-}
-
-LikelihoodRatio <- function(j, data){
-  signal=data[,j]
-  batch=factor(data$cohort)
-  sample=factor(data$subject)
-  trait <- data$cohort
-  set.seed(0)
-  results <- CNVtest.select.model(signal=signal, batch = batch, sample = sample, n.H0 = 3, method="BIC", v.ncomp = 1:5, v.model.component = rep('gaussian',5), v.model.mean = rep("~ strata(cn)",5), v.model.var = rep("~1", 5))
-  ncomp <- results$selected
-  if (ncomp == 1){
-    ncomp = 2
-  }
-  fit.pca <- CNVtest.binary ( signal = signal, sample = sample, batch = batch, ncomp = ncomp, n.H0=3, n.H1=0, model.var= '~ strata(cn)')
-  pca.posterior <- as.matrix((fit.pca$posterior.H0)[, paste('P',seq(1:ncomp),sep='')])
-  dimnames(pca.posterior)[[1]] <- (fit.pca$posterior.H0)$subject
-  signal=data.frame(signal=signal)
-  signal=as.matrix(signal)
-  dimnames(signal)[[1]]=data$subject
-  ldf.signal <- apply.ldf(signal, pca.posterior)
-  fit.ldf <- try(CNVtest.binary ( signal = signal, sample = sample, batch = batch, disease.status = trait, ncomp = ncomp, n.H0=3, n.H1=1, model.var = "~cn"),silent=TRUE)
-  if ("model.H0" %in% names(fit.ldf)){
-    LR.statistic <- -2*(fit.ldf$model.H0$lnL - fit.ldf$model.H1$lnL)
-    return(pchisq(LR.statistic,df=1,lower.tail = F))
-  }else{
-    return(NA)
-  }
-}
 ####
 CNAassociation <- function(cnv,cell,celltree,method="Standard"){
   index=apply(cnv,2,function(x){
