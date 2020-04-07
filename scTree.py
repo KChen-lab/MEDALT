@@ -110,7 +110,7 @@ def main():
         if datatype == "D":
             rawdata=writename
             os.system("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+rawdata+" "+datatype+" "+permutationPath)
-        if datatype == "R":
+        elif datatype == "R":
             rawdata=filename
             os.system("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+rawdata+" "+datatype+" "+permutationPath+" "+delt)
         for j in range(1,101):
@@ -133,7 +133,7 @@ def main():
         print "Pemutation tree finish."
         print "Performing LSA."
         os.system("Rscript "+scTreepath+"LSA.tree.R "+scTreepath+" "+filename+" "+writename+" "+CNVfile+" "+outpath+" "+datatype+" "+permutationPath)
-    else if permutation == "F":
+    elif permutation == "F":
         print "Performing LSA."
         os.system("Rscript "+scTreepath+"LSA.tree.R "+scTreepath+" "+filename+" "+writename+" "+CNVfile+" "+outpath+" "+datatype)
     os.chdir(outpath)
