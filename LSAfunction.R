@@ -44,7 +44,7 @@ permuteSeg <- function(CNV,generegion){
   chr=colnames(CNV)
   chr=do.call(rbind,strsplit(chr,split="_"))
   chr=unique(chr[,1])
-  CNV1=do.call(cbind,sapply(chr,function(j,CNV){
+  CNV1=do.call(cbind,lapply(chr,function(j,CNV){
   		subCNV=CNV[,grep(paste(j,"_",sep=""),colnames(CNV))]
   		index=sample(1:dim(subCNV)[1],dim(subCNV)[1])
   		return(subCNV[index,])
@@ -64,7 +64,7 @@ permuteGene <- function(CNV,reference){
   chr=colnames(CNV)
   chr=do.call(rbind,strsplit(chr,split="_"))
   chr=unique(chr[,1])
-  CNV1=do.call(cbind,sapply(chr,function(j,CNV){
+  CNV1=do.call(cbind,lapply(chr,function(j,CNV){
       subCNV=CNV[,grep(paste(j,"_",sep=""),colnames(CNV))]
       index=sample(1:dim(subCNV)[1],dim(subCNV)[1])
       return(subCNV[index,])
