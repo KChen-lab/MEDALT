@@ -3,7 +3,7 @@ from optparse import OptionParser
 from Readfile import *
 from Edmonds import *
 import os
-
+import subprocess
 def getPath(path):
     path1=path.split("/")
     if path1[0] == ".":
@@ -108,7 +108,7 @@ def main():
         permutationPath=outpath+"/temp"
         print "Reconstructing permuted tree! This will take a long time. Please have a coffee."
         if datatype == "D":
-            p=os.system("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+filename+" "+datatype+" "+permutationPath)
+            p = subprocess.Popen("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+filename+" "+datatype+" "+permutationPath,shell=True)
             p.wait()
         elif datatype == "R":
             os.system("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+filename+" "+datatype+" "+permutationPath+" "+delt)
