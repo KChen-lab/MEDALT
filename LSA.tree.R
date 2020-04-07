@@ -139,7 +139,7 @@ realres=list(cell=cell1,bandGscore=Gscore,geneGscore=geneGscore)
 #############permutation
 print.noquote("Calculating permutation CFL")
 if (length(args) < 7){
-  times=50
+  times=500
   permuteres=lapply(1:times,function(j,data,ID,ans,datatype,pathwaygene,generegion,reference){
     score=permuteScore(data,ID,ans,datatype,pathwaygene,generegion=region,reference)
     return(score)
