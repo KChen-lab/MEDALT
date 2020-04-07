@@ -108,7 +108,8 @@ def main():
         permutationPath=outpath+"/temp"
         print "Reconstructing permuted tree! This will take a long time. Please have a coffee."
         if datatype == "D":
-            os.system("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+filename+" "+datatype+" "+permutationPath)
+            p=os.system("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+filename+" "+datatype+" "+permutationPath)
+            p.wait()
         elif datatype == "R":
             os.system("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+filename+" "+datatype+" "+permutationPath+" "+delt)
         for j in range(1,101):
