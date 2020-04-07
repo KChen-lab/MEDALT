@@ -113,7 +113,7 @@ def main():
         elif datatype == "R":
             os.system("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+filename+" "+datatype+" "+permutationPath+" "+delt)
         for j in range(1,101):
-            permutefile=permutationPath+"/permute"+str(j)+".CNV.txt"
+            permutefile=permutationPath+"/permute."+str(j)+".CNV.txt"
             (nodes,root) = read(permutefile)
             node_name_list = nodes.keys()
             g = create_tree(nodes, node_name_list,root)
