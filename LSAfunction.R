@@ -721,8 +721,8 @@ CNAconnect <- function(sigCNA,celltree){
         node1="root"
         dist=as.numeric(as.character(node$depth[i]))
       }else{
-        node1=as.character(node[!is.na(index),][1,2])
-        dist=as.numeric(as.character(node[i,1]))-as.numeric(as.character(node[!is.na(index),][1,1]))
+        node1=as.character(node[!is.na(index),][1,1])
+        dist=as.numeric(as.character(node[i,2]))-as.numeric(as.character(node[!is.na(index),][1,2]))
       }
       CNAnetwork=rbind(CNAnetwork,c(node1,as.character(node$cell[i]),dist))
     }

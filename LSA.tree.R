@@ -156,14 +156,14 @@ if (length(args) < 7){
 #####Estimate emperical p value
 print.noquote("Estimate emperical p value")
 realcell=realres$cell
-index=match("root",as.character(realcell$cell))
+#index=match("root",as.character(realcell$cell))
 realband=realres$bandGscore
 realgene=realres$geneGscore
-if (!is.na(index)){
-  realband[[index]] <- NULL
-  realgene[[index]] <- NULL
-  realcell=realcell[realcell$cell!="root",]
-}
+#if (!is.na(index)){
+#  realband[[index]] <- NULL
+#  realgene[[index]] <- NULL
+#  realcell=realcell[realcell$cell!="root",]
+#}
 pvalue=lapply(1:dim(realcell)[1],significanceLevel,realband,realgene,permuteres,realcell)
 bandsig=CollectAsso(pvalue,cutoff=1/times,celltree,realcell)$bandres
 genesig=CollectAsso(pvalue,cutoff=1/times,celltree,realcell)$generes
@@ -198,14 +198,20 @@ if (!is.null(genesig)){
 print.noquote("Estimate parallel evolution")
 allsig=c()
 if ("geneLSA" %in% names(LSAres)){
-  allsig=rbind(allsig,LSAres$geneLSA)
-  write.table(LSAres$geneLSA,paste(outpath,"/gene.LSA.txt",sep=""),col.names = T,row.names=F,sep="\t",quote=F)
+  geneLSA=LSAres$geneLSA
+  geneLSA$CNA="AMP"
+  geneLSA$CNA[geneLSA$Score<0]="DEL"
+  allsig=rbind(allsig,geneLSA)
+  write.table(geneLSA,paste(outpath,"/gene.LSA.txt",sep=""),col.names = T,row.names=F,sep="\t",quote=F)
 }else{
   print.noquote("No LSA is identified at gene level!")
 }
 if ("bandLSA" %in% names(LSAres)){
-  allsig=rbind(allsig,LSAres$bandLSA[,c(3:6,2,1,7)])
-  write.table(LSAres$bandLSA[,c(3:6,2,1,7)],paste(outpath,"/segmental.LSA.txt",sep=""),col.names=T,row.names=F,quote=F,sep="\t")
+  bandLSA=LSAres$bandLSA
+  bandLSA$CNA="AMP"
+  bandLSA$CNA[bandLSA$Score<0]="DEL"
+  allsig=rbind(allsig,bandLSA)
+  write.table(bandLSA,paste(outpath,"/segmental.LSA.txt",sep=""),col.names=T,row.names=F,quote=F,sep="\t")
 }else{
   print.noquote("No segmental LSA is identified!")
 }
@@ -221,8 +227,6 @@ if ("paraBand" %in% names(LSAres)|"paraGene" %in% names(LSAres)){
 }
 ####plot LSA Tree
 if (!is.null(allsig)){
-  allsig$CNA="AMP"
-  allsig$CNA[allsig$Score<0]="DEL"
   LSAnetwork=CNAconnect(allsig,celltree)
   nodes=data.frame(id=union(LSAnetwork[,1],LSAnetwork[,2]),size=5)
   tab=table(as.character(allsig$cell))
@@ -248,8 +252,9 @@ if (!is.null(allsig)){
     }
   }
   nodes$annotation=annotation
+  nodes$size=nodes$size/max(nodes$size)*100
   links=data.frame(from=LSAnetwork[,1],to=LSAnetwork[,2],weight=as.numeric(LSAnetwork[,3]))
-  pdf(file=paste(outpath,"/LSA.tree.pdf",sep=""),width = 5,height = 5,useDingbats = F)
+  pdf(file=paste(outpath,"/LSA.tree.pdf",sep=""),width = 6,height = 6,useDingbats = F)
   net <- graph_from_data_frame(d=links, vertices=nodes, directed=T)
   plot(net, layout=layout_as_tree,vertex.frame.color=NA,vertex.color=nodes$color,edge.arrow.size=.2,vertex.label.cex=0.5,vertex.label=nodes$annotation)
   dev.off()
