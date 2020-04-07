@@ -48,7 +48,7 @@ def main():
                   help="The type of input data. Either D (DNA-seq) or R (RNA-seq).")
     op.add_option("-W","--Windows",dest="Windows",type="str",
                   help="the number of genes you want to merge when you input copy number profile inferred from scRNA-seq. Default 30.")
-    op.add_option("-Permutation","--Permutation",dest="Permutation",type="str",
+    op.add_option("-R","--Permutation",dest="Permutation",type="str",
                   help="Whether reconstructed permuted tree (T) or not (F). If not, permuted copy number profile will be used to perform LSA. Default value is F due to time cost.")
 
     (options,args) = op.parse_args()
