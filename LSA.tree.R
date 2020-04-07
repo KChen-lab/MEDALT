@@ -22,7 +22,6 @@ treeName=args[3]
 CNVfile=args[4]
 outpath = args[5]
 datatype=args[6]
-delt
 if (length(args)==7){
   permutationPath=args[7]
 }
