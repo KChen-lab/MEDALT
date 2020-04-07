@@ -71,7 +71,10 @@ def main():
     os.system("mkdir temp")
     writename=outpath+"/CNV.tree.txt"
     os.chdir(outpath+"/temp")
-    permutation=options.Permutation
+    if not options.Permutation:
+        permutation = "F"
+    else:
+        permutation=options.Permutation
     print "Transfer data to segmental level"
     if datatype == "D":
         os.system("Rscript "+scTreepath+"dataTransfer.R "+filename+" "+datatype)
@@ -130,7 +133,7 @@ def main():
         print "Pemutation tree finish."
         print "Performing LSA."
         os.system("Rscript "+scTreepath+"LSA.tree.R "+scTreepath+" "+filename+" "+writename+" "+CNVfile+" "+outpath+" "+datatype+" "+permutationPath)
-    else:
+    else if permutation == "F":
         print "Performing LSA."
         os.system("Rscript "+scTreepath+"LSA.tree.R "+scTreepath+" "+filename+" "+writename+" "+CNVfile+" "+outpath+" "+datatype)
     os.chdir(outpath)
