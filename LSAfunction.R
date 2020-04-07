@@ -501,7 +501,7 @@ mergeCNA <- function(node,sigCNA,band.region,arm.band,refer.band){
       sublength=sum(subrefer$V3-subrefer$V2)
       f=sublength/arm.band$length[arm.band$chr==i&arm.band$band=="p"]
       if (f > 0.5){
-        subres=rbind(subres,data.frame(depth=unique(psub$depth),cell=unique(as.character(psub$cell)),region=paste(i,type,sep=":"),Score=mean(psub$Score),pvalue=mean(psub$pvalue),adjustp=mean(psub$adjustp)))
+        subres=rbind(subres,data.frame(region=paste(i,type,sep=":"),Score=mean(psub$Score),pvalue=mean(psub$pvalue),adjustp=mean(psub$adjustp),cell=unique(as.character(psub$cell)),depth=unique(psub$depth)))
       }else{
         subband=subregion[subregion[,1]==i,]
         subband=do.call(rbind,strsplit(subband[,2],split="[.]"))
@@ -514,7 +514,7 @@ mergeCNA <- function(node,sigCNA,band.region,arm.band,refer.band){
             index=match(as.character(sub1$region),as.character(refer.band$ID))
             f=sum(refer.band$V3[index]-refer.band$V2[index])/band.region$length[band.region$chr==i&band.region$band==x]
             if (f > 0.5){
-              return(data.frame(depth=unique(sub1$depth),cell=unique(as.character(sub1$cell)),region=paste(i,x,sep=":"),Score=mean(sub1$Score),pvalue=mean(sub1$pvalue),adjustp=mean(sub1$adjustp)))
+              return(data.frame(region=paste(i,x,sep=":"),Score=mean(sub1$Score),pvalue=mean(sub1$pvalue),adjustp=mean(sub1$adjustp),cell=unique(as.character(sub1$cell)),depth=unique(sub1$depth)))
             }else{
               return(sub1)
             }
