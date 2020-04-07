@@ -72,7 +72,7 @@ DNA input files:
     gene1	2  3 1 ......
     gene2	3 3 1	......
 
-		For scRNA-seq data, we calculate an integer copy number by multiplying the relative CNA value from inferCNV by 2 (diploid) and rounding the results off to closest integers.
+>For scRNA-seq data, we calculate an integer copy number by multiplying the relative CNA value from inferCNV by 2 (diploid) and rounding the results off to closest integers.
 
 Run MEDALT package
 ============
