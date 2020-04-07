@@ -110,7 +110,7 @@ def main():
         if datatype == "D":
             rawdata=writename
             os.system("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+rawdata+" "+datatype+" "+permutationPath)
-        else if datatype == "R":
+        if datatype == "R":
             rawdata=filename
             os.system("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+rawdata+" "+datatype+" "+permutationPath+" "+delt)
         for j in range(1,101):
