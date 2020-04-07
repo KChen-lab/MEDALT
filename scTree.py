@@ -108,11 +108,9 @@ def main():
         permutationPath=outpath+"/temp"
         print "Reconstructing permuted tree! This will take a long time. Please have a coffee."
         if datatype == "D":
-            rawdata=writename
-            os.system("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+rawdata+" "+datatype+" "+permutationPath)
+            os.system("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+filename+" "+datatype+" "+permutationPath)
         elif datatype == "R":
-            rawdata=filename
-            os.system("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+rawdata+" "+datatype+" "+permutationPath+" "+delt)
+            os.system("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+filename+" "+datatype+" "+permutationPath+" "+delt)
         for j in range(1,101):
             permutefile=permutationPath+"/permute"+str(j)+".CNV.txt"
             (nodes,root) = read(permutefile)
