@@ -40,7 +40,7 @@ Options:
   -D DATATYPE, --DATATYPE=DATATYPE     the input file type either D (scDNA-seq) or R (scRNA-seq)
   -W WINDOWS, --WINDOWS=WINDOWS
                         The size of smoothing windows if your inputfile is from scRNA-seq.
-                        The value is the number of genes which will be merge. Default value is 30.									
+                        The value is the number of genes which will be merge. Default value is 30.
 	-Permutation permutation, --Permutation=Permutation
 												Performing reconstruction of permuted tree (T) or not (F) to estimate background distribution. If not, only permuted copy number profile will be used to perform LSA. Default value is F due to time cost.
 
