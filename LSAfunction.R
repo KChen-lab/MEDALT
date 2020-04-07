@@ -23,19 +23,11 @@ BinCNV<-function(refgene,newdata,delt){
         }
         subgene1=subgene[((inteKK-1)*bin+1):length(subgene)]
         index=match(subgene1,colnames(newdata))
-        if(length(index)>1){
-            regionCNV=rbind(regionCNV,apply(newdata[,index],1,mean))
-        }else{
-          regionCNV=rbind(regionCNV,newdata[,index])
-        }
+        regionCNV=rbind(regionCNV,apply(newdata[,index],1,mean))
         chrregion=c(chrregion,paste(chrom[i],"_",inteKK,sep=""))
       }else{
         index=match(subgene,colnames(newdata))
-        if(length(index)>1){
-            regionCNV=rbind(regionCNV,apply(newdata[,index],1,mean))
-        }else{
-          regionCNV=rbind(regionCNV,newdata[,index])
-        }
+        regionCNV=rbind(regionCNV,apply(newdata[,index],1,mean))
         chrregion=c(chrregion,paste(chrom[i],"_",1,sep=""))
       }
     }
