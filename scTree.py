@@ -45,9 +45,11 @@ def main():
     op.add_option("-O","--Output",dest="Output",type="str",
                   help="Output path")
     op.add_option("-D","--Datatype",dest="Datatype",type="str",
-                  help="Output path")
+                  help="The type of input data. Either D (DNA-seq) or R (RNA-seq).")
     op.add_option("-W","--Windows",dest="Windows",type="str",
                   help="the number of genes you want to merge when you input copy number profile inferred from scRNA-seq. Default 30.")
+    op.add_option("-Permutation","--Permutation",dest="Permutation",type="str",
+                  help="Whether reconstructed permuted tree (T) or not (F). If not, permuted copy number profile will be used to perform LSA. Default value is F due to time cost.")
 
     (options,args) = op.parse_args()
     if not options.Path or not options.Input or not options.Datatype:
@@ -69,6 +71,7 @@ def main():
     os.system("mkdir temp")
     writename=outpath+"/CNV.tree.txt"
     os.chdir(outpath+"/temp")
+    permutation=options.Permutation
     print "Transfer data to segmental level"
     if datatype == "D":
         os.system("Rscript "+scTreepath+"dataTransfer.R "+filename+" "+datatype)
@@ -97,15 +100,42 @@ def main():
             out1=out+"\t"+value+"\t"+str(tree[ele][value])
             print >> write,out1
     write.close()
-    print "MEDALT inferrence finished."
-    print "Performing LSA."
-    os.system("Rscript "+scTreepath+"LSA.tree.R "+scTreepath+" "+filename+" "+writename+" "+CNVfile+" "+outpath+" "+datatype)
+    print "MEDALT inferrence finish."
+    if permutation == "T":
+        permutationPath=outpath+"/temp"
+        print "Reconstructing permuted tree! This will take a long time. Please have a coffee."
+        if datatype == "D":
+            rawdata=writename
+            os.system("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+rawdata+" "+datatype+" "+permutationPath)
+        else if datatype == "R":
+            rawdata=filename
+            os.system("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+rawdata+" "+datatype+" "+permutationPath+" "+delt)
+        for j in range(1,101):
+            permutefile=permutationPath+"/permute"+str(j)+".CNV.txt"
+            (nodes,root) = read(permutefile)
+            node_name_list = nodes.keys()
+            g = create_tree(nodes, node_name_list,root)
+            result = compute_rdmst(g, root)
+            permuteTree=permutefile+".celltree.txt"
+            write=open(permuteTree,'w')
+            tree=result[0]
+            out1="from"+"\t"+"to"+"\t"+"dist"
+            print >> write, out1
+            for ele in tree.keys():
+                out=ele
+                for value in tree[ele].keys():
+                    out1=out+"\t"+value+"\t"+str(tree[ele][value])
+                    print >> write,out1
+            write.close()
+        print "Pemutation tree finish."
+        print "Performing LSA."
+        os.system("Rscript "+scTreepath+"LSA.tree.R "+scTreepath+" "+filename+" "+writename+" "+CNVfile+" "+outpath+" "+datatype+" "+permutationPath)
+    else:
+        print "Performing LSA."
+        os.system("Rscript "+scTreepath+"LSA.tree.R "+scTreepath+" "+filename+" "+writename+" "+CNVfile+" "+outpath+" "+datatype)
     os.chdir(outpath)
     os.system("rm -r temp")
     os.system("rm "+CNVfile)
-
-
-
 
 if __name__ == "__main__":
 
