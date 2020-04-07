@@ -30,11 +30,6 @@ def getPath(path):
     else:
         newpath=path
     return newpath
-def permutationTree(scTreepath,filename,datatype,permutationPath,delt):
-    if datatype == "D":
-        os.system("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+filename+" "+datatype+" "+permutationPath)
-    elif datatype == "R":
-        os.system("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+filename+" "+datatype+" "+permutationPath+" "+delt)
 
 
 def main():
@@ -81,14 +76,14 @@ def main():
     else:
         permutation=options.Permutation
     print "Transfer data to segmental level"
-    if not options.Windows:
-        print "The number of genes which are merger into the bin is default value 30. If you want change it please specify the value through -W"
-        delt = str(30)
-    else:
-        delt=options.Windows
     if datatype == "D":
         os.system("Rscript "+scTreepath+"dataTransfer.R "+filename+" "+datatype)
     elif datatype == "R":
+        if not options.Windows:
+            print "The number of genes which are merger into the bin is default value 30. If you want change it please specify the value through -W"
+            delt = str(30)
+        else:
+            delt=options.Windows
         os.system("Rscript "+scTreepath+"dataTransfer.R "+filename+" "+datatype+" "+scTreepath+" "+delt)
     else:
         print "Please provide the correct inputfile type through -D either 'D' or 'R'."
@@ -112,7 +107,10 @@ def main():
     if permutation == "T":
         permutationPath=outpath+"/temp"
         print "Reconstructing permuted tree! This will take a long time. Please have a coffee."
-        permutationTree(scTreepath,filename,datatype,permutationPath,delt)
+        if datatype == "D":
+            os.system("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+filename+" "+datatype+" "+permutationPath)
+        elif datatype == "R":
+            os.system("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+filename+" "+datatype+" "+permutationPath+" "+delt)
         for j in range(1,101):
             permutefile=permutationPath+"/permute"+str(j)+".CNV.txt"
             (nodes,root) = read(permutefile)
