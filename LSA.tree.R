@@ -26,6 +26,7 @@ if (length(args)==7){
   permutationPath=args[7]
 }
 source(paste(datapath,"/LSAfunction.R",sep=""))
+set.seed(123)
 ######Plot cell tree
 print.noquote("Visualization MEDALT!")
 celltree=read.csv(treeName,sep="\t")
