@@ -72,9 +72,8 @@ if (datatype=="D"){
   region$end=region[,2]
   colnames(region)=c("chrom","chrompos","end")
 }else if (datatype=="R"){
-  geneInfo=read.csv(reference,sep="\t",header=F)
-  index=match(row.names(data),as.character(geneInfo[,1]))
-  newdata=cbind(geneInfo[index[!is.na(index)],2:3],data[!is.na(index),])
+  index=match(row.names(data),as.character(reference[,1]))
+  newdata=cbind(reference[index[!is.na(index)],2:3],data[!is.na(index),])
   rownames(newdata)=rownames(data)[!is.na(index)]
   newdata=newdata[as.character(newdata[,1])!="chrM"&as.character(newdata[,1])!="chrY",]
   newdata[,1]=as.character(newdata[,1])
@@ -139,7 +138,7 @@ realres=list(cell=cell1,bandGscore=Gscore,geneGscore=geneGscore)
 #############permutation
 print.noquote("Calculating permutation CFL")
 if (length(args) < 7){
-  times=100
+  times=50
   permuteres=lapply(1:times,function(j,data,ID,ans,datatype,pathwaygene,generegion,reference){
     score=permuteScore(data,ID,ans,datatype,pathwaygene,generegion=region,reference)
     return(score)
@@ -156,14 +155,8 @@ if (length(args) < 7){
 #####Estimate emperical p value
 print.noquote("Estimate emperical p value")
 realcell=realres$cell
-#index=match("root",as.character(realcell$cell))
 realband=realres$bandGscore
 realgene=realres$geneGscore
-#if (!is.na(index)){
-#  realband[[index]] <- NULL
-#  realgene[[index]] <- NULL
-#  realcell=realcell[realcell$cell!="root",]
-#}
 pvalue=lapply(1:dim(realcell)[1],significanceLevel,realband,realgene,permuteres,realcell)
 bandsig=CollectAsso(pvalue,cutoff=1/times,celltree,realcell)$bandres
 genesig=CollectAsso(pvalue,cutoff=1/times,celltree,realcell)$generes
@@ -244,7 +237,7 @@ if (!is.null(allsig)){
       CNA=paste(as.character(CNA$region),as.character(CNA$CNA),sep=":")
       CNA1=CNA[1]
       if (length(CNA)>1){
-        for (j in 2:min(5,length(CNA))){
+        for (j in 2:min(3,length(CNA))){
           CNA1=paste(CNA1,CNA[j],sep=";")
           }
       }
@@ -252,7 +245,7 @@ if (!is.null(allsig)){
     }
   }
   nodes$annotation=annotation
-  nodes$size=nodes$size/max(nodes$size)*100
+  nodes$size=nodes$size/max(nodes$size)*30
   links=data.frame(from=LSAnetwork[,1],to=LSAnetwork[,2],weight=as.numeric(LSAnetwork[,3]))
   pdf(file=paste(outpath,"/LSA.tree.pdf",sep=""),width = 6,height = 6,useDingbats = F)
   net <- graph_from_data_frame(d=links, vertices=nodes, directed=T)

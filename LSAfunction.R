@@ -277,7 +277,11 @@ RefineCNA <- function(res,ancestor,celltree,realcell){
               anchorIndex=which(subres$cell==ancestor[i])
             }else{
               M=min(subchild$depth[is.na(index)])
-              anchorIndex=min(which(subres$depth>=M))
+              if(length(which(subres$depth>=M))>0){
+                anchorIndex=min(which(subres$depth>=M))
+              }else{
+                anchorIndex=which(subres$cell==ancestor[i])
+              }
             }
           }
           return(list(keep=subres[anchorIndex,],remove=subres[-anchorIndex,]))
