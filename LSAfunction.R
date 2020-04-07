@@ -11,27 +11,37 @@ BinCNV<-function(refgene,newdata,delt){
   chrregion=c()
   for (i in 1:length(chrom)){
     subgene=as.character(newgene$gene[newgene$chr==chrom[i]])
-    kk=length(subgene)/bin
-    inteKK=round(kk)
-    if (inteKK>1){
-      for(j in 1:(inteKK-1)){
-        subgene1=subgene[((j-1)*bin+1):(j*bin)]
+    if (length(subgene)>0){
+      kk=length(subgene)/bin
+      inteKK=round(kk)
+      if (inteKK>1){
+        for(j in 1:(inteKK-1)){
+          subgene1=subgene[((j-1)*bin+1):(j*bin)]
+          index=match(subgene1,colnames(newdata))
+          regionCNV=rbind(regionCNV,apply(newdata[,index],1,mean))
+          chrregion=c(chrregion,paste(chrom[i],"_",j,sep=""))
+        }
+        subgene1=subgene[((inteKK-1)*bin+1):length(subgene)]
         index=match(subgene1,colnames(newdata))
-        regionCNV=rbind(regionCNV,apply(newdata[,index],1,mean))
-        chrregion=c(chrregion,paste(chrom[i],"_",j,sep=""))
+        if(length(index)>1){
+            regionCNV=rbind(regionCNV,apply(newdata[,index],2,mean))
+        }else{
+          regionCNV=rbind(regionCNV,newdata)
+        }
+        chrregion=c(chrregion,paste(chrom[i],"_",inteKK,sep=""))
+      }else{
+        index=match(subgene,colnames(newdata))
+        if(length(index)>1){
+            regionCNV=rbind(regionCNV,apply(newdata[,index],2,mean))
+        }else{
+          regionCNV=rbind(regionCNV,newdata)
+        }
+        chrregion=c(chrregion,paste(chrom[i],"_",1,sep=""))
       }
-      subgene1=subgene[((inteKK-1)*bin+1):length(subgene)]
-      index=match(subgene1,colnames(newdata))
-      regionCNV=rbind(regionCNV,apply(newdata[,index],2,mean))
-      chrregion=c(chrregion,paste(chrom[i],"_",inteKK,sep=""))
-    }else{
-      index=match(subgene,colnames(newdata))
-      regionCNV=rbind(regionCNV,apply(newdata[,index],2,mean))
-      chrregion=c(chrregion,paste(chrom[i],"_",1,sep=""))
     }
   }
   row.names(regionCNV)=chrregion
-  regionCNV=round(regionCNV*2)
+  regionCNV=round(regionCNV)
   return(regionCNV)
 }
 
