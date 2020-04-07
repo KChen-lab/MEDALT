@@ -48,7 +48,7 @@ permuteSeg <- function(CNV,generegion){
   		return(subCNV[index,])
   	},CNV=CNV))
   colnames(CNV1)=colnames(CNV)
-  rownames(CNV1)=rownames(CNV)
+  row.names(CNV1)=row.names(CNV)
   return(CNV1)
 }
 
