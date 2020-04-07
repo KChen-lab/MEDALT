@@ -110,6 +110,7 @@ cell=data.frame(cell=cell)
 cell$depth=sapply(as.character(cell$cell),depthFunction,cellTree=celltree)
 cell$subtreesize=sapply(as.character(cell$cell),subtreeSize,cellTree=celltree)
 cell1=cell[cell$subtreesize>=5,]
+cell1=cell1[cell1$cell!="root",]
 Gscore=lapply(as.character(cell1$cell),lineageScore,newCNV,celltree)
 names(Gscore)=as.character(cell1$cell)
 pathwaygene=read.csv(paste(datapath,"/pathwaygene.txt",sep=""),sep="\t")
@@ -139,18 +140,17 @@ realres=list(cell=cell1,bandGscore=Gscore,geneGscore=geneGscore)
 print.noquote("Calculating permutation CFL")
 if (length(args) < 7){
   times=100
-  permuteres=lapply(1:times,function(j,cnv,ID,ans,datatype,pathwaygene,generegion,reference){
-    score=permuteScore(cnv,ID,ans,datatype,pathwaygene,generegion=region,reference)
+  permuteres=lapply(1:times,function(j,data,ID,ans,datatype,pathwaygene,generegion,reference){
+    score=permuteScore(data,ID,ans,datatype,pathwaygene,generegion=region,reference)
     return(score)
-  },cnv,ID,ans,datatype,pathwaygene,generegion=region,reference)
-}
-if (length(args)==7){
+  },data,ID,ans,datatype,pathwaygene,generegion=region,reference)
+}else if (length(args)==7){
   permutefile=list.files(permutationPath)
   permutefile=permutefile[grep("celltree",permutefile)]
   times=length(permutefile)
   print.noquote(paste("There are ",length(permutefile)," permutation trees."))
   if (length(permutefile)>0){
-    permuteres=lapply(permutefile,permuteTreeScore,ID,ans,datatype,pathwaygene,generegion=region,reference,permutationPath))
+    permuteres=lapply(permutefile,permuteTreeScore,ID,ans,datatype,pathwaygene,generegion=region,reference,permutationPath)
   }
 }
 #####Estimate emperical p value

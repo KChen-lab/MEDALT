@@ -35,12 +35,15 @@ BinCNV<-function(refgene,newdata,delt){
   return(regionCNV)
 }
 
-permuteSeg <- function(CNV){
+permuteSeg <- function(CNV,generegion){
+  CNV=CNV[,3:dim(CNV)[2]]
+  row.names(CNV)=generegion$ID1
+  CNV=t(CNV)
   chr=colnames(CNV)
   chr=do.call(rbind,strsplit(chr,split="_"))
   chr=unique(chr[,1])
   CNV1=do.call(cbind,sapply(chr,function(j,CNV){
-  		subCNV=CNV[,grep(j,colnames(CNV))]
+  		subCNV=CNV[,grep(paste(j,"_",sep=""),colnames(CNV))]
   		index=sample(1:dim(subCNV)[1],dim(subCNV)[1])
   		return(subCNV[index,])
   	},CNV=CNV))
@@ -72,10 +75,10 @@ permuteGene <- function(CNV,reference){
 
 permuteID <- function(ID,permuteCNV,ans){
   permuteCNV1=do.call(cbind,lapply(ID, function(id,cnv,ans){
-    chrID=ans$chrID[ans$ID==id]
+    chrID=ans$ID1[ans$ID==id]
     index=match(chrID,colnames(cnv))
     if (length(index)==1){
-      return(cnv[,index])
+      return(as.numeric(cnv[,index]))
     }else{
       return(round(apply(cnv[,index],1,mean)))
     }
@@ -84,9 +87,9 @@ permuteID <- function(ID,permuteCNV,ans){
   return(permuteCNV1)
 }
 
-permuteScore <- function(cnv,ID,ans,datatype,pathwaygene,generegion,reference){
+permuteScore <- function(data,ID,ans,datatype,pathwaygene,generegion,reference){
   if (datatype == "D"){
-    permuteCNV=permuteSeg(cnv)
+    permuteCNV=permuteSeg(data,generegion)
     permuteCNV1=permuteID(ID,permuteCNV,ans)
     geneCNV=do.call(cbind,lapply(1:dim(pathwaygene)[1],geneCNAfunction,pathwaygene=pathwaygene,ancestorCNV=permuteCNV,generegion=generegion))
     colnames(geneCNV)=as.character(pathwaygene$name)
@@ -100,7 +103,7 @@ permuteScore <- function(cnv,ID,ans,datatype,pathwaygene,generegion,reference){
     geneCNV=geneCNV[,index==1]
   }
   if (datatype == "R"){
-    permuteCNV=permuteGene(cnv,reference)
+    permuteCNV=permuteGene(data,reference)
     permuteCNV1=permuteID(ID,permuteCNV,ans)
     index=match(as.character(pathwaygene$name),colnames(permuteCNV))
     geneCNV=permuteCNV[,index[!is.na(index)]]
