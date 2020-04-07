@@ -26,7 +26,7 @@ if (length(args)==7){
   permutationPath=args[7]
 }
 source(paste(datapath,"/LSAfunction.R",sep=""))
-set.seed(123)
+set.seed(1234)
 ######Plot cell tree
 print.noquote("Visualization MEDALT!")
 celltree=read.csv(treeName,sep="\t")
@@ -73,6 +73,7 @@ if (datatype=="D"){
   region$end=region[,2]
   colnames(region)=c("chrom","chrompos","end")
 }else if (datatype=="R"){
+  data=round(data*2)
   index=match(row.names(data),as.character(reference[,1]))
   newdata=cbind(reference[index[!is.na(index)],2:3],data[!is.na(index),])
   rownames(newdata)=rownames(data)[!is.na(index)]

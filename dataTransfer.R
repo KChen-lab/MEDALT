@@ -22,6 +22,7 @@ DNAinput <- function(inputfile){
 ##delt means the size of bin which is defined by the number of gene
 RNAinput <- function(inputfile, reference, delt){
   data=read.csv(inputfile,sep="\t")
+  data=round(data*2)
   geneInfo=read.csv(reference,sep="\t",header=F)
   index=match(row.names(data),as.character(geneInfo[,1]))
   newdata=cbind(geneInfo[index[!is.na(index)],2:4],data[!is.na(index),])
@@ -58,7 +59,7 @@ RNAinput <- function(inputfile, reference, delt){
     segdata=rbind(segdata,subseg)
   }
   row.names(segdata)=paste("chr",chrregion,sep="")
-  segdata=t(round(segdata*2))
+  segdata=t(round(segdata))
   write.table(segdata, paste(inputfile,".CNV.txt",sep=""), sep = "\t",col.names = TRUE, row.names = TRUE, quote = FALSE)
   #return(paste(inputfile,".CNV.txt",sep=""))
 }
