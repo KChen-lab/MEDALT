@@ -38,7 +38,7 @@ plot(net, vertex.frame.color=NA,vertex.color=nodes$color,edge.arrow.size=.2,vert
 dev.off()
 ######input
 data = read.csv(inputfile,sep="\t",header = TRUE)
-reference=paste(datapath,"/gencode_v19_gene_pos.txt",sep="")
+reference=read.csv(paste(datapath,"/gencode_v19_gene_pos.txt",sep=""),sep="\t",header=F)
 refer.band=read.csv(paste(datapath,"/band.bed",sep=""),sep="\t",header = F)
 chrom=as.character(unique(refer.band[,1]))
 arm.band=c()
@@ -140,7 +140,7 @@ realres=list(cell=cell1,bandGscore=Gscore,geneGscore=geneGscore)
 print.noquote("Calculating permutation CFL")
 if (length(args) < 7){
   times=100
-  permuteres=lapply(1:times,function(j,data,ID,ans,datatype,pathwaygene,generegion,reference){
+  permuteres=lapply(1:1,function(j,data,ID,ans,datatype,pathwaygene,generegion,reference){
     score=permuteScore(data,ID,ans,datatype,pathwaygene,generegion=region,reference)
     return(score)
   },data,ID,ans,datatype,pathwaygene,generegion=region,reference)

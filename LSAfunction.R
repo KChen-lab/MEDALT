@@ -104,7 +104,10 @@ permuteScore <- function(data,ID,ans,datatype,pathwaygene,generegion,reference){
   }
   if (datatype == "R"){
     permuteCNV=permuteGene(data,reference)
-    permuteCNV1=permuteID(ID,permuteCNV,ans)
+    index=match(colnames(permuteCNV),row.names(generegion))
+    permuteCNV1=permuteCNV
+    colnames(permuteCNV1)=generegion$ID1[index]
+    permuteCNV1=permuteID(ID,permuteCNV1,ans)
     index=match(as.character(pathwaygene$name),colnames(permuteCNV))
     geneCNV=permuteCNV[,index[!is.na(index)]]
   }
