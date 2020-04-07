@@ -22,7 +22,7 @@ for (j in 1:100){
   }else if (datatype=="R"){
     data=round(data*2)
     permuteCNV=permuteGene(data,reference)
-    regionCNV=BinCNV(reference,permuteCNV,delt)
+    regionCNV=BinCNV(reference,permuteCNV,as.numeric(delt))
     write.table(permuteCNV,paste(permutationPath,"/permute.",j,".gene.CNV.txt",sep=""),col.names = T, row.names=T,quote=F,sep="\t")
     write.table(t(regionCNV),paste(permutationPath,"/permute.",j,".CNV.txt",sep=""),col.names = T, row.names=T,quote=F,sep="\t")
   }
