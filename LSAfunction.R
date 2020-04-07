@@ -361,10 +361,14 @@ MergeLSA <- function(res1,celltree,realcell){
       index=match(parent,celltree[,2])
       updateparent=parent
       updateparent[is.na(index)]="root"
-      if (length(unique(updateparent))==1&unique(updateparent)=="root"){
-        child=as.character(celltree[celltree[,1]==parent[is.na(index)],2])
-        overlap=intersect(child,realcell$cell)
-        if (length(overlap)>dim(subres)[1]){
+      if (length(unique(updateparent))==1){
+        if (unique(updateparent)=="root"){
+          child=as.character(celltree[celltree[,1]==parent[is.na(index)],2])
+          overlap=intersect(child,realcell$cell)
+          if (length(overlap)>dim(subres)[1]){
+            fres=rbind(fres,subres)
+          }
+        }else{
           fres=rbind(fres,subres)
         }
       }else{
