@@ -137,6 +137,7 @@ def main():
         print "Performing LSA."
         os.system("Rscript "+scTreepath+"LSA.tree.R "+scTreepath+" "+filename+" "+writename+" "+CNVfile+" "+outpath+" "+datatype)
     os.chdir(outpath)
+    print "Done!"
     os.system("rm -r temp")
     os.system("rm "+CNVfile)
 

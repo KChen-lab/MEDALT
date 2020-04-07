@@ -25,8 +25,9 @@ datatype=args[6]
 if (length(args)==7){
   permutationPath=args[7]
 }
-
+source(paste(datapath,"/LSAfunction.R",sep=""))
 ######Plot cell tree
+print.noquote("Visualization MEDALT!")
 celltree=read.csv(treeName,sep="\t")
 nodes=data.frame(id=union(as.character(celltree[,1]),as.character(celltree[,2])),size=5)
 nodes$color="lightblue"
@@ -64,6 +65,7 @@ band.region$length=band.region$end-band.region$start
 refer.band$ID=paste(as.character(refer.band$V1),as.character(refer.band$V4),sep=":")
 
 ###segmentation
+print.noquote("LSA segmentation!")
 if (datatype=="D"){
   region=data[,1:2]
   region[,1]=paste("chr",region[,1],sep="")
@@ -102,6 +104,7 @@ newCNV=do.call(cbind,lapply(ID, function(id,data,ans,region){
 },data=data,ans=ans,region))
 colnames(newCNV)=ID
 ####lineage partitioning to define CFL
+print.noquote("Calculating CFL")
 cell=union(as.character(celltree[,1]),as.character(celltree[,2]))
 cell=data.frame(cell=cell)
 cell$depth=sapply(as.character(cell$cell),depthFunction,cellTree=celltree)
@@ -133,6 +136,7 @@ geneGscore=lapply(as.character(cell1$cell),lineageScore,oncogenicCNV,celltree)
 names(geneGscore)=as.character(cell1$cell)
 realres=list(cell=cell1,bandGscore=Gscore,geneGscore=geneGscore)
 #############permutation
+print.noquote("Calculating permutation CFL")
 if (length(args) < 7){
   times=100
   permuteres=lapply(1:times,function(j,cnv,ID,ans,datatype,pathwaygene,generegion,reference){
@@ -150,6 +154,7 @@ if (length(args)==7){
   }
 }
 #####Estimate emperical p value
+print.noquote("Estimate emperical p value")
 realcell=realres$cell
 index=match("root",as.character(realcell$cell))
 realband=realres$bandGscore
@@ -190,6 +195,7 @@ if (!is.null(genesig)){
       LSAres$paraGene=paraGenesig
   }
 }
+print.noquote("Estimate parallel evolution")
 allsig=c()
 if ("geneLSA" %in% names(LSAres)){
   allsig=rbind(allsig,LSAres$geneLSA)
@@ -214,8 +220,6 @@ if ("paraBand" %in% names(LSAres)|"paraGene" %in% names(LSAres)){
   write.table(paraEvent,paste(outpath,"/parallel.LSA.txt",sep=""),col.names=T,row.names=F,sep="\t",quote=FALSE)
 }
 ####plot LSA Tree
-
-
 if (!is.null(allsig)){
   allsig$CNA="AMP"
   allsig$CNA[allsig$Score<0]="DEL"

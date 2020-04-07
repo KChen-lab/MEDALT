@@ -199,8 +199,8 @@ significanceLevel <- function(x,realband,realgene,permuteres,realcell){
         permutebandD=rbind(permutebandD,permuteres[[j]]$bandGscore[[i]][2,])
         permutegeneA=rbind(permutegeneA,permuteres[[j]]$geneGscore[[i]][1,])
         permutegeneD=rbind(permutegeneD,permuteres[[j]]$geneGscore[[i]][2,])
-        }
-        return(list(permutebandA,permutebandD,permutegeneA,permutegeneD))
+      }
+      return(list(permutebandA,permutebandD,permutegeneA,permutegeneD))
     },permuteres,sizecutoff)
   }else{
     permutedis=lapply(1:length(permuteres),function(j,permuteres,x){
@@ -208,7 +208,6 @@ significanceLevel <- function(x,realband,realgene,permuteres,realcell){
         permutebandD=permuteres[[j]]$bandGscore[[x]][2,]
         permutegeneA=permuteres[[j]]$geneGscore[[x]][1,]
         permutegeneD=permuteres[[j]]$geneGscore[[x]][2,]
-        }
         return(list(permutebandA,permutebandD,permutegeneA,permutegeneD))
     },permuteres,x)
   }
