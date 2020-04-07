@@ -108,11 +108,10 @@ def main():
         permutationPath=outpath+"/temp"
         print "Reconstructing permuted tree! This will take a long time. Please have a coffee."
         if datatype == "D":
-            p = subprocess.Popen("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+filename+" "+datatype+" "+permutationPath,shell=True)
-            p.wait()
+            os.system("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+filename+" "+datatype+" "+permutationPath)
         elif datatype == "R":
             os.system("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+filename+" "+datatype+" "+permutationPath+" "+delt)
-        for j in range(1,101):
+        for j in range(1,4):
             permutefile=permutationPath+"/permute."+str(j)+".CNV.txt"
             (nodes,root) = read(permutefile)
             node_name_list = nodes.keys()

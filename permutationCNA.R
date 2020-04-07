@@ -4,7 +4,7 @@ inputfile=args[2]
 datatype=args[3]
 permutationPath=args[4]
 if (length(args)==5){
-  delt=args[5]  
+  delt=args[5]
 }
 set.seed(1234)
 source(paste(datapath,"/LSAfunction.R",sep=""))
@@ -21,7 +21,7 @@ for (j in 1:100){
     write.table(permuteCNV,paste(permutationPath,"/permute.",j,".CNV.txt",sep=""),col.names = T, row.names=T,quote=F,sep="\t")
   }else if (datatype=="R"){
     permuteCNV=permuteGene(data,reference)
-    regionCNV=BinCNV(refgene,permuteCNV,delt)
+    regionCNV=BinCNV(reference,permuteCNV,delt)
     write.table(permuteCNV,paste(permutationPath,"/permute.",j,".gene.CNV.txt",sep=""),col.names = T, row.names=T,quote=F,sep="\t")
     write.table(regionCNV,paste(permutationPath,"/permute.",j,".CNV.txt",sep=""),col.names = T, row.names=T,quote=F,sep="\t")
   }

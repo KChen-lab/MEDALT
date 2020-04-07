@@ -1,6 +1,6 @@
 ####permute CNV profile
 BinCNV<-function(refgene,newdata,delt){
-  index=match(colnames(newdata),refgene[,1])
+  index=match(colnames(newdata),as.character(refgene[,1]))
   newgene=data.frame(gene=colnames(newdata),chr=refgene[index,2],start=refgene[index,3],end=refgene[index,4])
   newgene[,2]=as.character(newgene[,2])
   newgene[newgene[,2]=="chrX",2]="chr23"
@@ -122,8 +122,8 @@ permuteScore <- function(data,ID,ans,datatype,pathwaygene,generegion,reference){
 #####permutation tree
 permuteTreeScore <- function(permutetree,ID,ans,datatype,pathwaygene,generegion,reference,permutationPath){
   j=strsplit(permutetree,split="[.]")[[1]][2]
-  permuteCNV=read.csv(paste(permutationPath,"/permute.",j,".gene.CNV.txt",sep=""),sep="\t")
   if (datatype == "D"){
+    permuteCNV=read.csv(paste(permutationPath,"/permute.",j,".CNV.txt",sep=""),sep="\t")
     permuteCNV1=permuteID(ID,permuteCNV,ans)
     geneCNV=do.call(cbind,lapply(1:dim(pathwaygene)[1],geneCNAfunction,pathwaygene=pathwaygene,ancestorCNV=permuteCNV,generegion=generegion))
     colnames(geneCNV)=as.character(pathwaygene$name)
@@ -137,6 +137,7 @@ permuteTreeScore <- function(permutetree,ID,ans,datatype,pathwaygene,generegion,
     geneCNV=geneCNV[,index==1]
   }
   if (datatype == "R"){
+    permuteCNV=read.csv(paste(permutationPath,"/permute.",j,".gene.CNV.txt",sep=""),sep="\t")
     permuteCNV1=permuteID(ID,permuteCNV,ans)
     index=match(as.character(pathwaygene$name),colnames(permuteCNV))
     geneCNV=permuteCNV[,index[!is.na(index)]]
