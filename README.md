@@ -1,6 +1,6 @@
 Description
 ===========
-This package is to infer Minimal Event Distance Aneuploidy Lineage Tree (MEDALT) using integer copy number profile from single cell sequencing technology. It will infer:
+This package performs lineage tracing using copy number profile from single cell sequencing technology. It will infer:
 * An rooted directed minimal spanning tree (RDMST) to represent aneuploidy evolution of tumor cells
 * The focal and broad copy number alterations associated with lineage expansion
 
