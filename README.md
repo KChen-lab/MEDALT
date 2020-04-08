@@ -58,8 +58,6 @@ Single cell copy number input files:
 	(1) Integer copy number profile from scDNA-seq
 
 	(2) Inferred copy number profile from scRNA-seq
-	    we incorporate inferCNV result (expr.infercnv.12_denoised.dat) as input
-
 
   *scDNA-seq input*
 
@@ -73,6 +71,7 @@ Single cell copy number input files:
     gene1	0.5  1.5 2.1 ......
     gene2	1.1 1.8 0.6	......
 
+>For scRNA-seq input, the copy number profile is inferred relative copy number (relative to normal cells) instead of integer copy number. we directly incorporate inferCNV result (expr.infercnv.12_denoised.dat) as input.
 
 Run MEDALT package
 ============
