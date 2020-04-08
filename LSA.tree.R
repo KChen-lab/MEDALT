@@ -223,9 +223,13 @@ if ("paraBand" %in% names(LSAres)){
 if ("paraGene" %in% names(LSAres)){
   paraEvent=rbind(paraEvent,LSAres$paraGene)
 }
-if ("paraBand" %in% names(LSAres)|"paraGene" %in% names(LSAres)){
-  write.table(paraEvent,paste(outpath,"/parallel.LSA.txt",sep=""),col.names=T,row.names=F,sep="\t",quote=FALSE)
+if (!is.null(paraEvent)){
+  paraEvent=paraEvent[!is.na(paraEvent$pvalue),]
+  if (dim(paraEvent)[1]!=0){
+    write.table(paraEvent,paste(outpath,"/parallel.LSA.txt",sep=""),col.names=T,row.names=F,sep="\t",quote=FALSE)
+  }
 }
+
 ####plot LSA Tree
 if (!is.null(allsig)){
   LSAnetwork=CNAconnect(allsig,celltree)
