@@ -79,7 +79,7 @@ Run MEDALT package
 
     Python scTree.py [-O <output path>] [-W <smoothing window size>] –P <MEDALT package path> –I <input file> -D <input file type>
     [...] contains optional parameters. The mandatory arguments are -P, -I and -D. The input file type is either "D" or "R".
->By default, -W is 30, which defines the smoothing window as 30 adjacent gene for scRNA-seq data. 
+>By default, -W is 30, which defines the smoothing window as 30 adjacent gene for scRNA-seq data.  
 
 
 Examples
@@ -88,13 +88,16 @@ Try MEDALT in the package directory on the different example datasets
 
 **Example 1: Input integer copy number profile from scDNA-seq data**
 
-	python scTree.py -P ./ -I ./example/scDNA.CNV.txt -D D -O ./example/output1
+	python scTree.py -P ./ -I ./example/scDNA.CNV.txt -D D -O ./example/outputDNA
 
 **Example 2: Input integer copy number profile from scRNA-seq data**
 
-	python scTree.py -P ./ -I ./example/scRNA.inferCNV.txt -D R -O ./example/output2
+	python scTree.py -P ./ -I ./example/scRNA.inferCNV.txt -D R -O ./example/outputRNA
 
->In order to save time, we don't reconstruct permuted trees. You can add it by -Permutation T
+>In order to save time, we don't reconstruct trees based on permutation data. You can add it by -Permutation T
+>python scTree.py -P ./ -I ./example/scDNA.CNV1.txt -O ./example/outputDNAT -D D -R T
+>python scTree.py -P ./ -I ./example/scRNA.CNV1.txt -O ./example/outputRNAT -D R -R T 
+
 
 Output files
 ============
