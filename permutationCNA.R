@@ -10,6 +10,9 @@ set.seed(1234)
 source(paste(datapath,"/LSAfunction.R",sep=""))
 data = read.csv(inputfile,sep="\t",header = TRUE)
 reference=read.csv(paste(datapath,"/gencode_v19_gene_pos.txt",sep=""),sep="\t",header=F)
+if (datatype=="R"){
+  data=round(data*2)
+}
 for (j in 1:100){
   if (datatype=="D"){
     region=data[,1:2]
@@ -20,7 +23,6 @@ for (j in 1:100){
     permuteCNV=permuteSeg(data,region)
     write.table(permuteCNV,paste(permutationPath,"/permute.",j,".CNV.txt",sep=""),col.names = T, row.names=T,quote=F,sep="\t")
   }else if (datatype=="R"){
-    data=round(data*2)
     permuteCNV=permuteGene(data,reference)
     regionCNV=BinCNV(reference,permuteCNV,as.numeric(delt))
     write.table(permuteCNV,paste(permutationPath,"/permute.",j,".gene.CNV.txt",sep=""),col.names = T, row.names=T,quote=F,sep="\t")
