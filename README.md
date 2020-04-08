@@ -78,8 +78,8 @@ Run MEDALT package
 
     Python scTree.py [-O <output path>] [-W <smoothing window size>] [-R <permutation tree reconstruction>] –P <MEDALT package path> –I <input file> -D <input file type>
     [...] contains optional parameters.
-		The mandatory arguments are -P, -I and -D.
-		The input file type (-D) is either "D" (DNA) or "R" (RNA).
+    The mandatory arguments are -P, -I and -D.
+    The input file type (-D) is either "D" (DNA) or "R" (RNA).
 >By default, we estimate background using by-chromosome permuted single cell copy number matrix rather than reconstructing a tree from permuted matrix due to time cost. You can change the setting by -R T. The default value of smoothing window size (-W) is 30, which defines the smoothing window as 30 adjacent genes for scRNA-seq data.  
 
 
