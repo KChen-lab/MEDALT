@@ -36,7 +36,7 @@ Options:
   -I INPUT, --Input=INPUT
                         the input file is single cell copy number matrix estimated from scDNA-seq or scRNA-seq
   -D DATATYPE, --DATATYPE=DATATYPE     the input file type either D (scDNA-seq) or R (scRNA-seq)
-	-O OUTPATH, --outpath=OUTPATH
+  -O OUTPATH, --outpath=OUTPATH
                         the output path.
   -W WINDOWS, --WINDOWS=WINDOWS
                         The size of smoothing windows if your inputfile is from scRNA-seq.
