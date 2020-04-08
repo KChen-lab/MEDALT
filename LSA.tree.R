@@ -174,6 +174,7 @@ LSAres=list()
 if (!is.null(bandsig)){
   index=match(as.character(bandsig$cell),as.character(realcell$cell))
   bandsig$subtreesize=realcell$subtreesize[index]
+  cellsig=do.call(rbind,lapply(as.character(unique(bandsig$cell)),CombineRegion,bandsig,refer.band))
   LSAres$bandLSA=bandsig
   paraBand=table(as.character(bandsig$region))
   paraBand=paraBand[paraBand>1]
