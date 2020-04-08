@@ -41,9 +41,9 @@ Options:
   -W WINDOWS, --WINDOWS=WINDOWS
                         The size of smoothing windows if your inputfile is from scRNA-seq.
                         The value is the number of genes which will be merge. Default value is 30.
-  -Permutation permutation, --Permutation=Permutation
-                        Performing reconstruction of permuted tree (T) or not (F) to estimate background distribution.
-                        If not, only permuted copy number profile will be used to perform LSA.
+  -R PERMUTATION, --PERMUTATION=PERMUTATION
+                        Performing tree reconstruction based on permutation data (T) or not (F) to estimate background distribution.
+                        If yes, both permuted tree and copy number profile will be used to perform LSA. Otherwise, only permuted copy number profile will be used to perform LSA.
                         Default value is F due to time cost.
 
 ```
@@ -57,7 +57,8 @@ DNA input files:
 
 	(1) Integer copy number profile from scDNA-seq
 
-	(2) Inferred integer copy number profile from scRNA-seq
+	(2) Inferred copy number profile from scRNA-seq
+	    we incorporate inferCNV result (expr.infercnv.12_denoised.dat) as input
 
 
   *scDNA-seq input*
@@ -69,17 +70,16 @@ DNA input files:
   *scRNA-seq input*
 
     	cell1  cell2 cell3 ......
-    gene1	2  3 1 ......
-    gene2	3 3 1	......
+    gene1	0.5  1.5 2.1 ......
+    gene2	1.1 1.8 0.6	......
 
->For scRNA-seq data, we calculate an integer copy number by multiplying the relative CNA value from inferCNV by 2 (diploid) and rounding the results off to closest integers.
 
 Run MEDALT package
 ============
 
     Python scTree.py [-O <output path>] [-W <smoothing window size>] –P <MEDALT package path> –I <input file> -D <input file type>
     [...] contains optional parameters. The mandatory arguments are -P, -I and -D. The input file type is either "D" or "R".
->By default, -W is 30, which defines the smoothing window as 30 adjacent gene for scRNA-seq data.
+>By default, -W is 30, which defines the smoothing window as 30 adjacent gene for scRNA-seq data. 
 
 
 Examples
