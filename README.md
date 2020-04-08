@@ -94,9 +94,11 @@ Try MEDALT in the package directory on the different example datasets
 
 	python scTree.py -P ./ -I ./example/scRNA.inferCNV.txt -D R -O ./example/outputRNA
 
->In order to save time, we don't reconstruct trees based on permutation data. You can add it by -Permutation T
+>In order to save time, we don't reconstruct trees based on permutation data. You can add it by -R
+
 >python scTree.py -P ./ -I ./example/scDNA.CNV1.txt -O ./example/outputDNAT -D D -R T
->python scTree.py -P ./ -I ./example/scRNA.CNV1.txt -O ./example/outputRNAT -D R -R T 
+
+>python scTree.py -P ./ -I ./example/scRNA.CNV1.txt -O ./example/outputRNAT -D R -R T
 
 
 Output files
