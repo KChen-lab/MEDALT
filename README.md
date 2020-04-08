@@ -112,6 +112,8 @@ Three text files:
 
 	(3) gene.LSA.txt file: significant focal fitness-associated CNAs.
 
+> If there is parallel evolution event, the results will be saved in a separate file.
+
 Two figures:
 
 	(1) singlecell.tree.pdf: the MEDALT of cells visualized by igraph. You can input CNV.tree.txt into Cytoscape to generate preferred visualization.
