@@ -1,2 +1,0 @@
-region	lineage	pvalue
-chr19:q12	2	NA
