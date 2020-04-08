@@ -31,19 +31,19 @@ Usage
 Options:
   --version             show program's version number and exit
   -h, --help            Show this help message and exit.
-  -P PATH, --PATH=PATH
+  -P PATH, --path=PATH
                         the path of MEDALT package
-  -I INPUT, --Input=INPUT
+  -I INPUT, --input=INPUT
                         the input file is single cell copy number matrix estimated from scDNA-seq or scRNA-seq
-  -D DATATYPE, --DATATYPE=DATATYPE     the input file type either D (scDNA-seq) or R (scRNA-seq)
+  -D DATATYPE, --datatype=DATATYPE     the input file type either D (scDNA-seq) or R (scRNA-seq)
   -O OUTPATH, --outpath=OUTPATH
                         the output path.
-  -W WINDOWS, --WINDOWS=WINDOWS
+  -W WINDOWS, --windows=WINDOWS
                         The size of smoothing windows if your inputfile is from scRNA-seq.
                         The value is the number of genes which will be merge. Default value is 30.
-  -R PERMUTATION, --PERMUTATION=PERMUTATION
+  -R PERMUTATION, --permutation=PERMUTATION
                         Performing tree reconstruction based on permutation data (T) or not (F) to estimate background distribution.
-                        If yes, both permuted tree and copy number profile will be used to perform LSA. Otherwise, only permuted copy number profile will be used to perform LSA.
+                        If T, both permuted copy number matrix and reconstructed tree using permuted data will be used. Otherwise (F), only permuted copy number matrix will be used.
                         Default value is F due to time cost.
 
 ```
