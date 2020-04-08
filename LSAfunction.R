@@ -140,7 +140,10 @@ permuteTreeScore <- function(permutetree,ID,ans,datatype,pathwaygene,generegion,
   }
   if (datatype == "R"){
     permuteCNV=read.csv(paste(permutationPath,"/permute.",j,".gene.CNV.txt",sep=""),sep="\t")
-    permuteCNV1=permuteID(ID,permuteCNV,ans)
+    index=match(colnames(permuteCNV),row.names(generegion))
+    permuteCNV1=permuteCNV
+    colnames(permuteCNV1)=generegion$ID1[index]
+    permuteCNV1=permuteID(ID,permuteCNV1,ans)
     index=match(as.character(pathwaygene$name),colnames(permuteCNV))
     geneCNV=permuteCNV[,index[!is.na(index)]]
   }
