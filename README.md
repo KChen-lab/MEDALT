@@ -120,6 +120,8 @@ Two figures:
 
 	(2) LSA.tree.pdf: the tree visualization of fitness-associated CNAs by igraph
 
+> In LSA figure, we only show top 3 events for each lineage. You can check details in LSA file.
+
 
 Developer
 =========
