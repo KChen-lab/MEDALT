@@ -1,8 +1,8 @@
 Description
 ===========
 This package performs lineage tracing using copy number profile from single cell sequencing technology. It will infer:
-* An rooted directed minimal spanning tree (RDMST) to represent aneuploidy evolution of tumor cells
-* The focal and broad copy number alterations associated with lineage expansion
+* An rooted directed minimal spanning tree (RDMST) to represent aneuploidy evolution of tumor cells.
+* The focal and broad copy number alterations associated with lineage expansion.
 
 
 System requirements and dependency
