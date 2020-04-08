@@ -76,7 +76,7 @@ Single cell copy number input files:
 Run MEDALT package
 ============
 
-    Python scTree.py [-O <output path>] [-W <smoothing window size>] –P <MEDALT package path> –I <input file> -D <input file type>
+    Python scTree.py [-O <output path>] [-W <smoothing window size>] [-R <permutation tree reconstruction>] –P <MEDALT package path> –I <input file> -D <input file type>
     [...] contains optional parameters. The mandatory arguments are -P, -I and -D. The input file type is either "D" or "R".
 >By default, -W is 30, which defines the smoothing window as 30 adjacent gene for scRNA-seq data.  
 
