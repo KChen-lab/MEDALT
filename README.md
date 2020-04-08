@@ -34,7 +34,7 @@ Options:
   -P PATH, --PATH=PATH
                         the path of MEDALT package
   -I INPUT, --Input=INPUT
-                        the input file is integer copy number profile estimated from scDNA-seq or scRNA-seq
+                        the input file is single cell copy number matrix estimated from scDNA-seq or scRNA-seq
   -O OUTPATH, --outpath=OUTPATH
                         the output path.
   -D DATATYPE, --DATATYPE=DATATYPE     the input file type either D (scDNA-seq) or R (scRNA-seq)
