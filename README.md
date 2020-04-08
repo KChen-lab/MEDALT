@@ -78,7 +78,7 @@ Run MEDALT package
 
     Python scTree.py [-O <output path>] [-W <smoothing window size>] [-R <permutation tree reconstruction>] –P <MEDALT package path> –I <input file> -D <input file type>
     [...] contains optional parameters. The mandatory arguments are -P, -I and -D. The input file type is either "D" or "R".
->By default, -W is 30, which defines the smoothing window as 30 adjacent gene for scRNA-seq data.  
+>By default, -W is 30, which defines the smoothing window as 30 adjacent gene for scRNA-seq data. In addition, we  
 
 
 Examples
@@ -89,12 +89,12 @@ Try MEDALT in the package directory on the different example datasets
 
 	python scTree.py -P ./ -I ./example/scDNA.CNV.txt -D D -O ./example/outputDNA
 
-**Example 2: Input integer copy number profile from scRNA-seq data**
+**Example 2: Input inferred relative copy number profile from scRNA-seq data**
 
 	python scTree.py -P ./ -I ./example/scRNA.inferCNV.txt -D R -O ./example/outputRNA
 
->In order to save time, we don't reconstruct trees based on permutation data. You can add it by -R
-
+>In order to save time, we don't reconstruct trees based on permutation data. You can set -R T
+to reconstruct permuted tree.
 
 Output files
 ============
