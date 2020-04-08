@@ -106,7 +106,8 @@ def main():
     print "MEDALT inferrence finish."
     if permutation == "T":
         permutationPath=outpath+"/temp"
-        print "Reconstructing permuted tree! This will take a long time. Please have a coffee."
+        print "Reconstructing tree based on permutation data."
+        print "This will take a long time! Please have some coffee."
         if datatype == "D":
             os.system("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+filename+" "+datatype+" "+permutationPath)
         elif datatype == "R":
