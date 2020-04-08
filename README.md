@@ -80,7 +80,7 @@ Run MEDALT package
     [...] contains optional parameters.
 		The mandatory arguments are -P, -I and -D.
 		The input file type (-D) is either "D" (DNA) or "R" (RNA).
->By default, we estimate background using by-chromosome permuted single cell copy number matrix rather than reconstructing a tree from permuted matrix due to time cost. You can change the setting by -R T. The default value of smoothing window size (-W) is 30, which defines the smoothing window as 30 adjacent gene for scRNA-seq data.  
+>By default, we estimate background using by-chromosome permuted single cell copy number matrix rather than reconstructing a tree from permuted matrix due to time cost. You can change the setting by -R T. The default value of smoothing window size (-W) is 30, which defines the smoothing window as 30 adjacent genes for scRNA-seq data.  
 
 
 Examples
@@ -103,21 +103,21 @@ Output files
 
 Three text files:
 
-	(1) CNV.tree.txt file: an rooted directed tree includes three columns: parent node, child node and distance
+	(1) CNV.tree.txt which is an rooted directed tree including three columns: parent node, child node and distance
 
-	(2) segmental.LSA.txt file: significant broad fitness-associated CNAs
+	(2) segmental.LSA.txt which includes broad CNAs significantly associated with lineage expansion
 
-	(3) gene.LSA.txt file: significant focal fitness-associated CNAs.
+	(3) gene.LSA.txt which includes focal (gene) CNAs significantly associated with lineage expansion
 
 > If there is parallel evolution event, the results will be saved in a separate file.
 
 Two figures:
 
-	(1) singlecell.tree.pdf: the MEDALT of cells visualized by igraph. You can input CNV.tree.txt into Cytoscape to generate preferred visualization.
+	(1) singlecell.tree.pdf which is a visualization of MEDALT by igraph. You also can input CNV.tree.txt into Cytoscape to generate preferred visualization.
 
-	(2) LSA.tree.pdf: the tree visualization of fitness-associated CNAs by igraph
+	(2) LSA.tree.pdf which is a visualization of identified CNAs by igraph.
 
-> In LSA figure, we only show top 3 events for each lineage. You can check details in LSA file.
+> In LSA figure, we only show top 3 events for each lineage. You can check more details in segmental or gene level LSA file.
 
 
 Developer
