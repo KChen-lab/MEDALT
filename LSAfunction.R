@@ -744,3 +744,104 @@ CNAconnect <- function(sigCNA,celltree){
   colnames(CNAnetwork)=c("node1","node2","dist")
   return(CNAnetwork)
 }
+
+CombineRegion <- function(node,newsig,refer.band){
+  cellsig=c()
+  subsig=newsig[newsig$cell==node,]
+  indexregion=match(subsig$region,refer.band$ID)
+  if (length(indexregion[!is.na(indexregion)])>0){
+    subsig1=subsig[!is.na(indexregion),]
+    if (dim(subsig1)[1]==1){
+      cellsig=rbind(cellsig,subsig1[,1:6])
+    }else if (dim(subsig)[1]>1){
+      subsig1$band=indexregion[!is.na(indexregion)]
+      subsig1=subsig1[order(subsig1$band),]
+      subregion=do.call(rbind,sapply(as.character(subsig1$region),strsplit,split=":"))
+      subsig1$chr=subregion[,1]
+      subsig1$arm=sapply(as.character(subregion[,2]),substr,start=1,stop=1)
+      subsig1$ll=sapply(as.character(subregion[,2]),nchar)
+      subsig1$bandID=substr(as.character(subregion[,2]),start=2,stop=subsig1$ll)
+      k=1
+      newsig11=c()
+      start=k
+      while (k < dim(subsig1)[1]){
+        if (subsig1$band[k+1]-subsig1$band[k]==1&subsig1$CNA[k+1]==subsig1$CNA[k]&subsig1$arm[k+1]==subsig1$arm[k]){
+          k=k+1
+          if (k == dim(subsig1)[1]){
+            end=k
+            region=paste(subsig1$chr[start],":",subsig1$arm[start],subsig1$bandID[start],"-",subsig1$bandID[end],sep="")
+            tempsig=data.frame(depth=subsig1$depth[start],cell=subsig1$cell[start],region=region,monotone.test=mean(subsig1$monotone.test[start:end]),trend.test=mean(subsig1$trend.test[start:end]),CNA=subsig1$CNA[start])
+            newsig11=rbind(newsig11,tempsig)
+          }
+        }else{
+          end=k
+          if (start == end){
+            newsig11=rbind(newsig11,subsig1[k,1:6])
+          }else{
+            region=paste(subsig1$chr[start],":",subsig1$arm[start],subsig1$bandID[start],"-",subsig1$bandID[end],sep="")
+            tempsig=data.frame(depth=subsig1$depth[start],cell=subsig1$cell[start],region=region,monotone.test=mean(subsig1$monotone.test[start:end]),trend.test=mean(subsig1$trend.test[start:end]),CNA=subsig1$CNA[start])
+            newsig11=rbind(newsig11,tempsig)
+          }
+          k=k+1
+          start=k
+          if (start==dim(subsig1)[1]){
+            newsig11=rbind(newsig11,subsig1[k,1:6])
+          }
+        }
+      }
+      cellsig=rbind(cellsig,newsig11)
+    }
+  }
+  if (length(indexregion[is.na(indexregion)])>0){
+    subsig2=subsig[is.na(indexregion),]
+    if (dim(subsig2)[1]==1){
+      cellsig=rbind(cellsig,subsig2[,1:6])
+    }else if (dim(subsig2)[1]>1){
+      subregion2=do.call(rbind,sapply(as.character(subsig2$region),strsplit,split=":"))
+      index=match(subregion2[,2],c("p","q"))
+      if (length(index[!is.na(index)])>0){
+        subsig21=subsig2[!is.na(index),]
+        cellsig=rbind(cellsig,subsig21[,1:6])
+      }
+      if (length(index[is.na(index)])>0){
+        subsig22=subsig2[is.na(index),]
+        subsig22=subsig22[order(as.character(subsig22$region)),]
+        subregion=do.call(rbind,sapply(as.character(subsig22$region),strsplit,split=":"))
+        subsig22$chr=subregion[,1]
+        subsig22$arm=sapply(as.character(subregion[,2]),substr,start=1,stop=1)
+        subsig22$ll=sapply(as.character(subregion[,2]),nchar)
+        subsig22$band=as.numeric(sapply(as.character(subregion[,2]),substr,start=2,stop=subsig22$ll))
+        k=1
+        newsig22=c()
+        start=k
+        while (k < dim(subsig22)[1]){
+          if (subsig22$chr[k+1]==subsig22$chr[k]&subsig22$arm[k+1]==subsig22$arm[k]&subsig22$CNA[k+1]==subsig22$CNA[k]&subsig22$band[k+1]-subsig22$band[k]==1){
+            k=k+1
+            if (k == dim(subsig22)[1]){
+              end=k
+              region=paste(subsig22$chr[start],":",subsig22$arm[start],subsig22$band[start],"-",subsig22$band[end],sep="")
+              tempsig=data.frame(depth=subsig22$depth[start],cell=subsig22$cell[start],region=region,monotone.test=mean(subsig22$monotone.test[start:end]),trend.test=mean(subsig22$trend.test[start:end]),CNA=subsig22$CNA[start])
+              newsig22=rbind(newsig22,tempsig)
+            }
+          }else{
+            end=k
+            if (start == end){
+              newsig22=rbind(newsig22,subsig22[k,1:6])
+            }else{
+              region=paste(subsig22$chr[start],":",subsig22$arm[start],subsig22$band[start],"-",subsig22$band[end],sep="")
+              tempsig=data.frame(depth=subsig22$depth[start],cell=subsig22$cell[start],region=region,monotone.test=mean(subsig22$monotone.test[start:end]),trend.test=mean(subsig22$trend.test[start:end]),CNA=subsig22$CNA[start])
+              newsig22=rbind(newsig22,tempsig)
+            }
+            k=k+1
+            start=k
+            if (start==dim(subsig22)[1]){
+              newsig22=rbind(newsig22,subsig22[k,1:6])
+            }
+          }
+        }
+        cellsig=rbind(cellsig,newsig22)
+      }
+    }
+  }
+  return(cellsig)
+}
