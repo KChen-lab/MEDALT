@@ -51,7 +51,7 @@ Options:
 Input files
 ===========
 
-DNA input files:
+single cell copy number input files:
 
 	Two kinds of input files are allowed in MEDALT:
 
