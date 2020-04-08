@@ -1,0 +1,2 @@
+region	lineage	pvalue
+chr14:q	2	0.48502994011976
