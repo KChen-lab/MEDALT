@@ -51,7 +51,7 @@ Options:
 Input files
 ===========
 
-single cell copy number input files:
+Single cell copy number input files:
 
 	Two kinds of input files are allowed in MEDALT:
 
