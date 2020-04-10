@@ -35,7 +35,10 @@ Options:
                         the path of MEDALT package
   -I INPUT, --input=INPUT
                         the input file is single cell copy number matrix estimated from scDNA-seq or scRNA-seq
-  -D DATATYPE, --datatype=DATATYPE     the input file type either D (scDNA-seq) or R (scRNA-seq)
+  -D DATATYPE, --datatype=DATATYPE     
+                        the input file type either D (scDNA-seq) or R (scRNA-seq)
+  -G GENOME, --genome=GENOME
+                        Genome version "hg19" or "hg38"
   -O OUTPATH, --outpath=OUTPATH
                         the output path.
   -W WINDOWS, --windows=WINDOWS
