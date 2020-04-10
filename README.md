@@ -128,7 +128,7 @@ Three text files:
 	cell: the cell node that corresponding associated lineage rooted at;
 	depth: the depth of cell in MEDALT tree
 	subtreesize: the size of corresponding lineage
-	CNA: direction of copy number alteration
+	CNA: direction of copy number alteration, amplification (AMP) or deletion (DEL)
 
 > If there is parallel evolution event, the results will be saved in a separate file.
 
