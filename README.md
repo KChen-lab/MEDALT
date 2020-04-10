@@ -64,9 +64,9 @@ Single cell copy number input files:
 
   *scDNA-seq input*
 
-  	chr	pos	cell1  cell2 cell3 ......
-  	1	977836	2  3 1 ......
-  	1	1200863	3 3 1	......
+  	chr pos     cell1  cell2  cell3  ......
+  	1   977836    2      3      1    ......
+  	1   1200863   3      3      1    ......
 
   *scRNA-seq input*
 
@@ -128,7 +128,7 @@ Three text files:
 	cell: the cell node that corresponding associated lineage rooted at;
 	depth: the depth of cell in MEDALT tree
 	subtreesize: the size of corresponding lineage
-	CNA: direction of copy number alteration 
+	CNA: direction of copy number alteration
 
 > If there is parallel evolution event, the results will be saved in a separate file.
 
