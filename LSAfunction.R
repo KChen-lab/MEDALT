@@ -130,6 +130,7 @@ permuteTreeScore <- function(permutetree,ID,ans,datatype,pathwaygene,generegion,
     permuteCNV1=permuteID(ID,permuteCNV,ans)
     geneCNV=do.call(cbind,lapply(1:dim(pathwaygene)[1],geneCNAfunction,pathwaygene=pathwaygene,ancestorCNV=permuteCNV,generegion=generegion))
     colnames(geneCNV)=as.character(pathwaygene$name)
+    rownames(geneCNV)=rownames(permuteCNV)
     index=apply(geneCNV,2,function(x){
       if (NA %in% x){
         return(0)
