@@ -100,7 +100,7 @@ Try MEDALT in the package directory on the different example datasets
 
 >In order to save time, we don't reconstruct trees based on permutation data. You can set -R T
 to reconstruct permuted tree.
->We provide hg19 and hg38 
+We provide hg19 and hg38, you can change it by -G. 
 
 Output files
 ============
