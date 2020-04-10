@@ -79,9 +79,9 @@ Single cell copy number input files:
 Run MEDALT package
 ============
 
-    Python scTree.py [-O <output path>] [-W <smoothing window size>] [-R <permutation tree reconstruction>] –P <MEDALT package path> –I <input file> -D <input file type>
+    Python scTree.py [-O <output path>] [-W <smoothing window size>] [-R <permutation tree reconstruction>] –P <MEDALT package path> –I <input file> -D <input file type> -G <genome version>
     [...] contains optional parameters.
-    The mandatory arguments are -P, -I and -D.
+    The mandatory arguments are -P, -I, -D and -G.
     The input file type (-D) is either "D" (DNA) or "R" (RNA).
 >By default, we estimate background using by-chromosome permuted single cell copy number matrix rather than reconstructing a tree from permuted matrix due to time cost. You can change the setting by -R T. The default value of smoothing window size (-W) is 30, which defines the smoothing window as 30 adjacent genes for scRNA-seq data.  
 
@@ -92,14 +92,15 @@ Try MEDALT in the package directory on the different example datasets
 
 **Example 1: Input integer copy number profile from scDNA-seq data**
 
-	python scTree.py -P ./ -I ./example/scDNA.CNV.txt -D D -O ./example/outputDNA
+	python scTree.py -P ./ -I ./example/scDNA.CNV.txt -D D -G hg19 -O ./example/outputDNA
 
 **Example 2: Input inferred relative copy number profile from scRNA-seq data**
 
-	python scTree.py -P ./ -I ./example/scRNA.inferCNV.txt -D R -O ./example/outputRNA
+	python scTree.py -P ./ -I ./example/scRNA.inferCNV.txt -D R -G hg19 -O ./example/outputRNA
 
 >In order to save time, we don't reconstruct trees based on permutation data. You can set -R T
 to reconstruct permuted tree.
+>We provide hg19 and hg38 
 
 Output files
 ============
