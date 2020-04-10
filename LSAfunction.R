@@ -95,6 +95,7 @@ permuteScore <- function(data,ID,ans,datatype,pathwaygene,generegion,reference){
     permuteCNV1=permuteID(ID,permuteCNV,ans)
     geneCNV=do.call(cbind,lapply(1:dim(pathwaygene)[1],geneCNAfunction,pathwaygene=pathwaygene,ancestorCNV=permuteCNV,generegion=generegion))
     colnames(geneCNV)=as.character(pathwaygene$name)
+    rownames(geneCNV)=rownames(permuteCNV)
     index=apply(geneCNV,2,function(x){
       if (NA %in% x){
         return(0)
@@ -672,7 +673,7 @@ geneCNAfunction<-function(k,pathwaygene,ancestorCNV,generegion){
   chr=as.character(gene[1,1])
   start=gene[1,2]
   end=gene[1,3]
-  gene=gene[1,4]
+  gene=as.character(gene[1,4])
   subregion=generegion[as.character(generegion$chrom)==chr,]
   if (dim(subregion)[1]>0){
     subCNV=ancestorCNV[,grep(paste(chr,"_",sep=""),colnames(ancestorCNV))]

@@ -23,7 +23,7 @@ CNVfile=args[4]
 outpath = args[5]
 datatype=args[6]
 hg=args[7]
-if (length(args)==7){
+if (length(args)==8){
   permutationPath=args[8]
 }
 source(paste(datapath,"/LSAfunction.R",sep=""))
@@ -94,7 +94,7 @@ if (datatype=="D"){
   data=newdata
 }
 write.table(region,"region.bed",col.names = F,row.names = F,sep="\t",quote = F)
-code=bedtools_intersect(paste("-a ",datapath,"/",hg,"band.bed -b region.bed",sep=""))
+code=bedtools_intersect(paste("-a ",datapath,"/",hg,".band.bed -b region.bed",sep=""))
 ans <- eval(code)
 ans=as.data.frame(ans)
 ans$ID=paste(ans$seqnames,":",ans$name,sep="")
@@ -122,10 +122,13 @@ cell1=cell1[cell1$cell!="root",]
 Gscore=lapply(as.character(cell1$cell),lineageScore,newCNV,celltree)
 names(Gscore)=as.character(cell1$cell)
 pathwaygene=read.csv(paste(datapath,"/pathwaygene.txt",sep=""),sep="\t")
+index=match(pathwaygene$name,reference[,1])
+pathwaygene=data.frame(chr=reference[index[!is.na(index)],2],start=reference[index[!is.na(index)],3],end=reference[index[!is.na(index)],4],name=pathwaygene$name[!is.na(index)],pathway=pathwaygene$pathway[!is.na(index)])
 if (datatype=="D"){
   cnv=read.csv(CNVfile,sep="\t")
   oncogenicCNV=do.call(cbind,lapply(1:dim(pathwaygene)[1],geneCNAfunction,pathwaygene=pathwaygene,ancestorCNV=cnv,generegion=region))
   colnames(oncogenicCNV)=as.character(pathwaygene$name)
+  rownames(oncogenicCNV)=rownames(cnv)
 }else if (datatype == "R"){
   data=data[,3:dim(data)[2]]
   index=match(as.character(pathwaygene$name),rownames(data))
@@ -146,13 +149,13 @@ names(geneGscore)=as.character(cell1$cell)
 realres=list(cell=cell1,bandGscore=Gscore,geneGscore=geneGscore)
 #############permutation
 print.noquote("Calculating permutation CFL")
-if (length(args) < 7){
+if (length(args) < 8){
   times=500
   permuteres=lapply(1:times,function(j,data,ID,ans,datatype,pathwaygene,generegion,reference){
     score=permuteScore(data,ID,ans,datatype,pathwaygene,generegion=region,reference)
     return(score)
   },data,ID,ans,datatype,pathwaygene,generegion=region,reference)
-}else if (length(args)==7){
+}else if (length(args)==8){
   permutefile=list.files(permutationPath)
   permutefile=permutefile[grep("celltree",permutefile)]
   times=length(permutefile)
