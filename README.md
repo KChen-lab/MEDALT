@@ -121,6 +121,14 @@ Three text files:
 	chr7:p15.3    0.57   0.001    0.005     t4c14   4      14            AMP
 	chr10:q24.2  -0.85   0.019    0.248     t4c14   4      14            DEL
 
+	region: genomic loci which have CNA are associated with lineage expansion;
+	Score: average cumulative fold level (CFL) in the lineage;
+	pvalue: emprival p value of LSA;
+	adjustp: corrected p value after FDR corrected;
+	cell: the cell node that corresponding associated lineage rooted at;
+	depth: the depth of cell in MEDALT tree
+	subtreesize: the size of corresponding lineage
+	CNA: direction of copy number alteration 
 
 > If there is parallel evolution event, the results will be saved in a separate file.
 
