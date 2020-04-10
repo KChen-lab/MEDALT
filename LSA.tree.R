@@ -94,7 +94,7 @@ if (datatype=="D"){
   data=newdata
 }
 write.table(region,"region.bed",col.names = F,row.names = F,sep="\t",quote = F)
-code=bedtools_intersect(paste("-a ",datapath,"/band.bed -b region.bed",sep=""))
+code=bedtools_intersect(paste("-a ",datapath,"/",hg,"band.bed -b region.bed",sep=""))
 ans <- eval(code)
 ans=as.data.frame(ans)
 ans$ID=paste(ans$seqnames,":",ans$name,sep="")
