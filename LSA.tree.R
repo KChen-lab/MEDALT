@@ -170,10 +170,10 @@ realcell=realres$cell
 realband=realres$bandGscore
 realgene=realres$geneGscore
 pvalue=lapply(1:dim(realcell)[1],significanceLevel,realband,realgene,permuteres,realcell)
-if (length(args) < 7){
+if (length(args) < 8){
   bandsig=CollectAsso(pvalue,cutoff=0.01,celltree,realcell)$bandres
   genesig=CollectAsso(pvalue,cutoff=0.01,celltree,realcell)$generes
-}else if (length(args)==7){
+}else if (length(args)==8){
   bandsig=CollectAsso(pvalue,cutoff=0.05,celltree,realcell)$bandres
   genesig=CollectAsso(pvalue,cutoff=0.05,celltree,realcell)$generes
 }
