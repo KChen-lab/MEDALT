@@ -83,7 +83,7 @@ Run MEDALT package
     [...] contains optional parameters.
     The mandatory arguments are -P, -I, -D and -G.
     The input file type (-D) is either "D" (DNA) or "R" (RNA).
-		The genome version (-G) is either "hg19" or "hg38".
+    The genome version (-G) is either "hg19" or "hg38".
 >By default, we estimate background using by-chromosome permuted single cell copy number matrix rather than reconstructing a tree from permuted matrix due to time cost. You can change the setting by -R T. The default value of smoothing window size (-W) is 30, which defines the smoothing window as 30 adjacent genes for scRNA-seq data.  
 
 
