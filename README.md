@@ -116,7 +116,7 @@ Three text files:
 *LSA output*
 
 	region      Score   pvalue   adjustp   cell   depth   subtreesize   CNA
-	chr10:q26.3	-0.89   0.001   0.007   t4c17		2				38						DEL
+	chr10:q26.3  -0.89   0.001   0.007   t4c17   2   38   DEL
 	chr7:q11		0.58		0.007		0.017			t4c17		2				38						AMP
 	chr7:p15.3	0.57	  0.001		0.005			t4c14		4				14						AMP
 	chr10:q24.2	-0.85		0.019		0.248			t4c14		4				14						DEL
