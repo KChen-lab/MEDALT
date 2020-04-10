@@ -22,8 +22,9 @@ treeName=args[3]
 CNVfile=args[4]
 outpath = args[5]
 datatype=args[6]
+hg=args[7]
 if (length(args)==7){
-  permutationPath=args[7]
+  permutationPath=args[8]
 }
 source(paste(datapath,"/LSAfunction.R",sep=""))
 set.seed(1234)
@@ -39,8 +40,14 @@ plot(net, vertex.frame.color=NA,vertex.color=nodes$color,edge.arrow.size=.2,vert
 dev.off()
 ######input
 data = read.csv(inputfile,sep="\t",header = TRUE)
-reference=read.csv(paste(datapath,"/gencode_v19_gene_pos.txt",sep=""),sep="\t",header=F)
-refer.band=read.csv(paste(datapath,"/band.bed",sep=""),sep="\t",header = F)
+if (hg=="hg19"){
+  reference=read.csv(paste(datapath,"/gencode_v19_gene_pos.txt",sep=""),sep="\t",header=F)
+  refer.band=read.csv(paste(datapath,"/hg19.band.bed",sep=""),sep="\t",header = F)
+}
+if (hg=="hg38"){
+  reference=read.csv(paste(datapath,"/gencode_v38_gene_pos.txt",sep=""),sep="\t",header=F)
+  refer.band=read.csv(paste(datapath,"/hg38.band.bed",sep=""),sep="\t",header = F)
+}
 chrom=as.character(unique(refer.band[,1]))
 arm.band=c()
 band.region=c()
