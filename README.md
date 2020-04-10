@@ -100,7 +100,7 @@ Try MEDALT in the package directory on the different example datasets
 
 >In order to save time, we don't reconstruct trees based on permutation data. You can set -R T
 to reconstruct permuted tree.
-We provide hg19 and hg38, you can change it by -G. 
+We provide hg19 and hg38, you can change it by -G.
 
 Output files
 ============
@@ -112,6 +112,14 @@ Three text files:
 	(2) segmental.LSA.txt which includes broad CNAs significantly associated with lineage expansion
 
 	(3) gene.LSA.txt which includes focal (gene) CNAs significantly associated with lineage expansion
+
+*LSA output*
+region				Score		pvalue	adjustp		cell		depth		subtreesize		CNA
+chr10:q26.3		-0.89		0.001		0.007			t4c17		2				38						DEL
+chr7:q11			0.58		0.007		0.017			t4c17		2				38						AMP
+chr7:p15.3	  0.57	  0.001		0.005			t4c14		4				14						AMP
+chr10:q24.2		-0.85		0.019		0.248			t4c14		4				14						DEL
+
 
 > If there is parallel evolution event, the results will be saved in a separate file.
 
