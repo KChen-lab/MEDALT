@@ -42,6 +42,8 @@ def main():
                   help="Path to script")
     op.add_option("-I","--Input",dest="Input",type="str",
                   help="Input file")
+    op.add_option("-G","--Genome",dest="Genome",type="str",
+                  help="Genome version hg19 or hg38")
     op.add_option("-O","--Output",dest="Output",type="str",
                   help="Output path")
     op.add_option("-D","--Datatype",dest="Datatype",type="str",
@@ -52,7 +54,7 @@ def main():
                   help="Whether reconstructed permuted tree (T) or not (F). If not, permuted copy number profile will be used to perform LSA. Default value is F due to time cost.")
 
     (options,args) = op.parse_args()
-    if not options.Path or not options.Input or not options.Datatype:
+    if not options.Path or not options.Input or not options.Datatype or not options.Genome:
         op.print_help()
         sys.exit(1)
     currentPath=os.getcwd()
@@ -60,6 +62,7 @@ def main():
     scTreepath=getPath(scTreepath)
     filename=options.Input
     filename=getPath(filename)
+    hg=options.Genome
     if not options.Output:
     	outpath=currentPath
     else:
@@ -131,10 +134,10 @@ def main():
             write.close()
         print "Pemutation tree finish."
         print "Performing LSA."
-        os.system("Rscript "+scTreepath+"LSA.tree.R "+scTreepath+" "+filename+" "+writename+" "+CNVfile+" "+outpath+" "+datatype+" "+permutationPath)
+        os.system("Rscript "+scTreepath+"LSA.tree.R "+scTreepath+" "+filename+" "+writename+" "+CNVfile+" "+outpath+" "+datatype+" "+hg+" "+permutationPath)
     elif permutation == "F":
         print "Performing LSA."
-        os.system("Rscript "+scTreepath+"LSA.tree.R "+scTreepath+" "+filename+" "+writename+" "+CNVfile+" "+outpath+" "+datatype)
+        os.system("Rscript "+scTreepath+"LSA.tree.R "+scTreepath+" "+filename+" "+writename+" "+CNVfile+" "+outpath+" "+datatype+" "+hg)
     os.chdir(outpath)
     print "Done!"
     os.system("rm -r temp")
