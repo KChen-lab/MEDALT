@@ -97,7 +97,7 @@ Try MEDALT in the package directory on the different example datasets
 
 **Example 2: Input inferred relative copy number profile from scRNA-seq data**
 
-	python scTree.py -P ./ -I ./example/scRNA.inferCNV.txt -D R -G hg19 -O ./example/outputRNA
+	python scTree.py -P ./ -I ./example/scRNA.CNV.txt -D R -G hg19 -O ./example/outputRNA
 
 >In order to save time, we don't reconstruct trees based on permutation data. You can set -R T
 to reconstruct permuted tree.
