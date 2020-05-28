@@ -9,12 +9,12 @@ if (!"HelloRanges" %in% installed.packages()){
 if (!"igraph" %in% installed.packages()){
   install.packages("igraph")
 }
-if (!"DescTools" %in% installed.packages()){
-  install.packages("DescTools")
-}
+#if (!"DescTools" %in% installed.packages()){
+#  install.packages("DescTools")
+#}
 library(HelloRanges)
 library(igraph)
-library(DescTools)
+#library(DescTools)
 args<-commandArgs(T)
 datapath=args[1]
 inputfile=args[2]
