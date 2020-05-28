@@ -12,7 +12,7 @@ This package runs on Python 2.7.
 It also requires R/3.5
 to run and has dependency on the R packages:
 
-	igraph, HelloRanges and DescTools.
+	igraph and HelloRanges.
 
 
 
