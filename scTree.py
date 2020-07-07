@@ -2,7 +2,7 @@
 from optparse import OptionParser
 from Readfile import *
 from Edmonds import *
-import os
+import os,sys
 import subprocess
 def getPath(path):
     path1=path.split("/")
