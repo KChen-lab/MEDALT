@@ -1,3 +1,9 @@
+#R function for permutation process
+#input: 1.the path of R script LSAfunction.R
+#       2.copy number profile matrix
+#       3.datatype "D" (DNA-seq) or "R" (RNA-seq)
+#       4.set the path which store the tree corresponding to permutation datasets
+#       5.the number of genes 
 args<-commandArgs(T)
 datapath=args[1]
 inputfile=args[2]
