@@ -134,10 +134,14 @@ def main():
         permutationPath=outpath+"/temp"
         print "Reconstructing tree based on permutation data."
         print "This will take a long time! Please have some coffee."
+
+        #permute copy number profile
         if datatype == "D":
             os.system("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+filename+" "+datatype+" "+permutationPath)
         elif datatype == "R":
             os.system("Rscript "+scTreepath+"permutationCNA.R "+scTreepath+" "+filename+" "+datatype+" "+permutationPath+" "+delt)
+
+        #Infer permutation tree
         for j in range(1,101):
             permutefile=permutationPath+"/permute."+str(j)+".CNV.txt"
             (nodes,root) = read(permutefile)
@@ -157,6 +161,8 @@ def main():
             write.close()
         print "Pemutation tree finish."
         print "Performing LSA."
+
+        #Identifying CNAs associated with cellular lineage expansion.
         os.system("Rscript "+scTreepath+"LSA.tree.R "+scTreepath+" "+filename+" "+writename+" "+CNVfile+" "+outpath+" "+datatype+" "+hg+" "+permutationPath)
     elif permutation == "F":
         print "Performing LSA."
