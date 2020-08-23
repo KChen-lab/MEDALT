@@ -50,8 +50,10 @@ pdf(file=paste(outpath,"/singlecell.tree.pdf",sep=""),width = 5,height = 5,useDi
 plot(net, vertex.frame.color=NA,vertex.color=nodes$color,edge.arrow.size=.2,vertex.label=NA)
 dev.off()
 
-#input
+#read input copy number data
 data = read.csv(inputfile,sep="\t",header = TRUE)
+
+#read reference genome file
 if (hg=="hg19"){
   reference=read.csv(paste(datapath,"/gencode_v19_gene_pos.txt",sep=""),sep="\t",header=F)
   refer.band=read.csv(paste(datapath,"/hg19.band.bed",sep=""),sep="\t",header = F)
@@ -60,13 +62,15 @@ if (hg=="hg38"){
   reference=read.csv(paste(datapath,"/gencode_v38_gene_pos.txt",sep=""),sep="\t",header=F)
   refer.band=read.csv(paste(datapath,"/hg38.band.bed",sep=""),sep="\t",header = F)
 }
+
+#generate the genome position data at arm and band level
 chrom=as.character(unique(refer.band[,1]))
 arm.band=c()
 band.region=c()
 for (i in chrom){
   subrefer=refer.band[refer.band[,1]==i,]
-  parm=subrefer[grep("p",subrefer[,4]),]
-  qarm=subrefer[grep("q",subrefer[,4]),]
+  parm=subrefer[grep("p",subrefer[,4]),]#p arm region
+  qarm=subrefer[grep("q",subrefer[,4]),]#q arm region
   armregion=data.frame(chr=i,start=c(parm[1,2],qarm[1,2]),end=c(parm[dim(parm)[1],3],qarm[dim(qarm)[1],3]),band=c("p","q"))
   arm.band=rbind(arm.band,armregion)
   subband=do.call(rbind,strsplit(as.character(subrefer[,4]),split="[.]"))
@@ -83,8 +87,7 @@ for (i in chrom){
 arm.band$length=arm.band$end-arm.band$start
 band.region$length=band.region$end-band.region$start
 refer.band$ID=paste(as.character(refer.band$V1),as.character(refer.band$V4),sep=":")
-
-###segmentation
+#generate the bin position based on input copy number data
 print.noquote("LSA segmentation!")
 if (datatype=="D"){
   region=data[,1:2]
@@ -106,6 +109,8 @@ if (datatype=="D"){
   data=newdata
 }
 write.table(region,"region.bed",col.names = F,row.names = F,sep="\t",quote = F)
+
+##correspond input genomic bin to genome band ID
 code=bedtools_intersect(paste("-a ",datapath,"/",hg,".band.bed -b region.bed",sep=""))
 ans <- eval(code)
 ans=as.data.frame(ans)
@@ -123,6 +128,7 @@ newCNV=do.call(cbind,lapply(ID, function(id,data,ans,region){
   }
 },data=data,ans=ans,region))
 colnames(newCNV)=ID
+
 ####lineage partitioning to define CFL
 print.noquote("Calculating CFL")
 cell=union(as.character(celltree[,1]),as.character(celltree[,2]))
