@@ -4,6 +4,7 @@ from Readfile import *
 from Edmonds import *
 import os,sys
 import subprocess
+#get the absolute path of input file
 def getPath(path):
     path1=path.split("/")
     if path1[0] == ".":
@@ -54,6 +55,7 @@ def main():
                   help="Whether reconstructed permuted tree (T) or not (F). If not, permuted copy number profile will be used to perform LSA. Default value is F due to time cost.")
 
     (options,args) = op.parse_args()
+    # 
     if not options.Path or not options.Input or not options.Datatype or not options.Genome:
         op.print_help()
         sys.exit(1)
