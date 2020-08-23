@@ -1,9 +1,9 @@
 #R function for permutation process
-#input: 1.the path of R script LSAfunction.R
-#       2.copy number profile matrix
-#       3.datatype "D" (DNA-seq) or "R" (RNA-seq)
-#       4.set the path which store the tree corresponding to permutation datasets
-#       5.the number of genes to estimate copy number of genomic bin if you set datatype as R
+#input: 1. the path of R script LSAfunction.R
+#       2. copy number profile matrix
+#       3. datatype "D" (DNA-seq) or "R" (RNA-seq)
+#       4. set the path which store the tree corresponding to permutation datasets
+#       5. the number of genes to estimate copy number of genomic bin if you set datatype as R
 #           defaul 30 genes
 
 args<-commandArgs(T)
@@ -39,7 +39,7 @@ for (j in 1:100){
 
     #Permutate the copy number profile by genes from the same chromosome into different cells
     permuteCNV=permuteGene(data,reference)
-    
+
     #calculate copy number of genomic bin
     regionCNV=BinCNV(reference,permuteCNV,as.numeric(delt))
     write.table(permuteCNV,paste(permutationPath,"/permute.",j,".gene.CNV.txt",sep=""),col.names = T, row.names=T,quote=F,sep="\t")
