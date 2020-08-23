@@ -59,6 +59,8 @@ def main():
     if not options.Path or not options.Input or not options.Datatype or not options.Genome:
         op.print_help()
         sys.exit(1)
+
+    # get the input parameters
     currentPath=os.getcwd()
     scTreepath=options.Path
     scTreepath=getPath(scTreepath)
@@ -81,6 +83,10 @@ def main():
     else:
         permutation=options.Permutation
     print "Transfer data to segmental level"
+
+    #change the input copy number profile to the matrix format used to infer Tree
+    #if the data type = R, estimate integer copy number profile by merging the number of adjacent genes.
+    #Default number of genes is 30.
     if datatype == "D":
         os.system("Rscript "+scTreepath+"dataTransfer.R "+filename+" "+datatype)
     elif datatype == "R":
@@ -94,9 +100,16 @@ def main():
         print "Please provide the correct inputfile type through -D either 'D' or 'R'."
     CNVfile=filename+".CNV.txt"
     print "Inferring MEDALT."
+
+    #Identifying root node from input file.
+    #If a diploidy genome is not input, will add an extra diploidy node as root
     (nodes,root) = read(CNVfile)
     node_name_list = nodes.keys()
+
+    #calculation of MED distance
     g = create_tree(nodes, node_name_list,root)
+
+    #Inference of tree and output
     result = compute_rdmst(g, root)
     write=open(writename,'w')
     tree=result[0]
