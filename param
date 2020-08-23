@@ -1,9 +1,0 @@
-This is the non-recursive version of the code
-
-This is the pacakged IO Interface for the tree inference algorithm:
-
-Please enter your input file name below: (no quotation mark, see format in reference file)
-toChunk.CNV.txt
-
-Please enter your output file name below:
-output
