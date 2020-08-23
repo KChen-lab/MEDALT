@@ -74,7 +74,7 @@ Single cell copy number input files:
     gene1  0.5    1.5    2.1   ......
     gene2  1.1    1.8    0.6   ......
 
->For scRNA-seq input, the copy number is inferred relative copy number (relative to normal cells) instead of integer copy number. If value = 1, it means diploid. We directly incorporate inferCNV result (expr.infercnv.12_denoised.dat) as input.
+>For scRNA-seq input, the copy number is inferred relative copy number (relative to normal cells) instead of integer copy number. If value close to 1, it means diploid. Value close to 0.5 means copy number = 1. Value close to 1.5 means copy number = 3. We directly incorporate inferCNV result as input.
 
 Run MEDALT package
 ============
