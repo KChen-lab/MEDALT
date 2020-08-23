@@ -122,6 +122,13 @@ def main():
             print >> write,out1
     write.close()
     print "MEDALT inferrence finish."
+
+    #Permutation process for lineage speciation analysis (LSA)
+    #Permutate the copy number profile by chromosome into different cells
+    #if permutation == T, tree corresonds to each permuted data will be inferred by above algorithm
+        # we infer 100 permutation tree due to the cost of time
+    #if permutation == F, just the permutation datasets rather than permutation tree are used to estimate the significance.
+        # we permute 500 times.
     if permutation == "T":
         permutationPath=outpath+"/temp"
         print "Reconstructing tree based on permutation data."
