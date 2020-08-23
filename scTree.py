@@ -55,7 +55,7 @@ def main():
                   help="Whether reconstructed permuted tree (T) or not (F). If not, permuted copy number profile will be used to perform LSA. Default value is F due to time cost.")
 
     (options,args) = op.parse_args()
-    # 
+    # check input parameters. Package path, input file, data type and genome version are required.
     if not options.Path or not options.Input or not options.Datatype or not options.Genome:
         op.print_help()
         sys.exit(1)
