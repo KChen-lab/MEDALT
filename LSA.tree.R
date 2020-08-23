@@ -227,9 +227,9 @@ if (!is.null(bandsig)){
   cellsig=do.call(rbind,lapply(as.character(unique(bandsig$cell)),CombineRegion,bandsig,refer.band))
   LSAres$bandLSA=cellsig
   paraBand=table(as.character(bandsig$region))
-  paraBand=paraBand[paraBand>1]
+  paraBand=paraBand[paraBand>1]#CNAs of genomic bin associated with more than one independent lineages
   if (length(paraBand)>0){
-    paraBandsig=GenePara(bandsig,permuteres,type="band",realcell)
+    paraBandsig=GenePara(bandsig,permuteres,type="band",realcell)#parallel evolution test
     if (!is.null(paraBandsig)){
       LSAres$paraBand=paraBandsig
     }
@@ -240,13 +240,15 @@ if (!is.null(genesig)){
   genesig$subtreesize=realcell$subtreesize[index]
   LSAres$geneLSA=genesig
   paraGene=table(as.character(genesig$region))
-  paraGene=paraGene[paraGene>1]
+  paraGene=paraGene[paraGene>1]#gene associated with more than one independent lieage
   if (length(paraGene)>0){
-      paraGenesig=GenePara(genesig,permuteres,type="gene",realcell)
+      paraGenesig=GenePara(genesig,permuteres,type="gene",realcell)#parallele evolution estimation
       LSAres$paraGene=paraGenesig
   }
 }
 print.noquote("Estimate parallel evolution")
+
+#collect all significant results
 allsig=c()
 if ("geneLSA" %in% names(LSAres)){
   geneLSA=LSAres$geneLSA
@@ -266,6 +268,8 @@ if ("bandLSA" %in% names(LSAres)){
 }else{
   print.noquote("No segmental LSA is identified!")
 }
+
+#collect all parallel evolution events
 paraEvent=c()
 if ("paraBand" %in% names(LSAres)){
   paraEvent=rbind(paraEvent,LSAres$paraBand)
@@ -280,13 +284,13 @@ if (!is.null(paraEvent)){
   }
 }
 
-####plot LSA Tree
+#plot LSA Tree
 if (!is.null(allsig)){
   LSAnetwork=CNAconnect(allsig,celltree)
   nodes=data.frame(id=union(LSAnetwork[,1],LSAnetwork[,2]),size=5)
   tab=table(as.character(allsig$cell))
   index=match(nodes$id,names(tab))
-  nodes$size[!is.na(index)]=nodes$size[!is.na(index)]*tab[index[!is.na(index)]]/5
+  nodes$size[!is.na(index)]=nodes$size[!is.na(index)]*tab[index[!is.na(index)]]/5#define node size
   nodes$size[nodes$size<=5]=5
   nodes$color="gray"
   nodes$color[!is.na(index)]=rainbow(length(unique(allsig$cell)))
@@ -294,7 +298,6 @@ if (!is.null(allsig)){
   for (i in 1:dim(nodes)[1]){
     if (as.character(nodes$id[i]) %in% as.character(allsig$cell)){
       CNA=allsig[as.character(allsig$cell)==as.character(nodes$id[i]),]
-      #pvalue=apply(CNA[,4:5],1,min)
       CNA=CNA[order(CNA$pvalue),]
       CNA=paste(as.character(CNA$region),as.character(CNA$CNA),sep=":")
       CNA1=CNA[1]
