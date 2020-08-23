@@ -186,8 +186,8 @@ print.noquote("Calculating permutation CFL")
 if (length(args) < 8){
   #if there was no permutation tree, calculate CFL in permutation dataset based on real tree structure
   times=500
-  permuteres=lapply(1:times,function(j,data,ID,ans,datatype,pathwaygene,generegion,reference){
-    score=permuteScore(data,ID,ans,datatype,pathwaygene,generegion=region,reference)
+  permuteres=lapply(1:times,function(j,data,ID,ans,datatype,pathwaygene,generegion,reference,celltree){
+    score=permuteScore(data,ID,ans,datatype,pathwaygene,generegion=region,reference,celltree)
     return(score)
   },data,ID,ans,datatype,pathwaygene,generegion=region,reference)
 }else if (length(args)==8

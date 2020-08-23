@@ -1,4 +1,6 @@
-####permute CNV profile
+#all R functions to perform lineage speciation analysis
+
+#calculate copy number of genomic bin based on the number of genes (delt)
 BinCNV<-function(refgene,newdata,delt){
   index=match(colnames(newdata),as.character(refgene[,1]))
   newgene=data.frame(gene=colnames(newdata),chr=refgene[index,2],start=refgene[index,3],end=refgene[index,4])
@@ -7,7 +9,6 @@ BinCNV<-function(refgene,newdata,delt){
   chrom=paste("chr",c(1:23),sep="")
   chro=as.character(newgene$chr)
   chrom=intersect(chrom,chro)
-  #chrom=c(chrom,"chrX")
   bin=delt
   regionCNV=c()
   chrregion=c()
@@ -19,7 +20,7 @@ BinCNV<-function(refgene,newdata,delt){
       for(j in 1:(inteKK-1)){
         subgene1=subgene[((j-1)*bin+1):(j*bin)]
         index=match(subgene1,colnames(newdata))
-        regionCNV=rbind(regionCNV,apply(newdata[,index],1,mean))
+        regionCNV=rbind(regionCNV,apply(newdata[,index],1,mean))#define average CN as bin level value
         chrregion=c(chrregion,paste(chrom[i],"_",j,sep=""))
       }
       subgene1=subgene[((inteKK-1)*bin+1):length(subgene)]
@@ -37,6 +38,9 @@ BinCNV<-function(refgene,newdata,delt){
   return(regionCNV)
 }
 
+#permute copy number profile by chromosome into different cells
+#CNV: integer CNV at genomic bin level
+#generegion: genomic band ID correspond to row of CNV
 permuteSeg <- function(CNV,generegion){
   CNV=CNV[,3:dim(CNV)[2]]
   row.names(CNV)=generegion$ID1
@@ -54,6 +58,9 @@ permuteSeg <- function(CNV,generegion){
   return(CNV1)
 }
 
+#permute copy number profile by genes from the same chromosome into different cells
+#CNV: CNV at gene level, row is gene
+#reference: refernce genome
 permuteGene <- function(CNV,reference){
   CNV=t(CNV)
   index=match(colnames(CNV),as.character(reference[,1]))
@@ -75,6 +82,7 @@ permuteGene <- function(CNV,reference){
   return(CNV1)
 }
 
+#estimate permute CNV at chromosome band level
 permuteID <- function(ID,permuteCNV,ans){
   permuteCNV1=do.call(cbind,lapply(ID, function(id,cnv,ans){
     chrID=ans$ID1[ans$ID==id]
@@ -89,7 +97,12 @@ permuteID <- function(ID,permuteCNV,ans){
   return(permuteCNV1)
 }
 
-permuteScore <- function(data,ID,ans,datatype,pathwaygene,generegion,reference){
+#Calculate CFL in permutation dataset based on real tree strucure
+#data: realCNV
+#ID:genome band ID
+#ans: correspondence between gemonic bin and band ID
+#datatype: D(scDNA-seq or scRNA-seq)
+permuteScore <- function(data,ID,ans,datatype,pathwaygene,generegion,reference,celltree){
   if (datatype == "D"){
     permuteCNV=permuteSeg(data,generegion)
     permuteCNV1=permuteID(ID,permuteCNV,ans)
@@ -122,7 +135,7 @@ permuteScore <- function(data,ID,ans,datatype,pathwaygene,generegion,reference){
 }
 
 
-#####permutation tree
+#permutation tree
 permuteTreeScore <- function(permutetree,ID,ans,datatype,pathwaygene,generegion,reference,permutationPath){
   j=strsplit(permutetree,split="[.]")[[1]][2]
   if (datatype == "D"){
