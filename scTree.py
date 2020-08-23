@@ -129,6 +129,7 @@ def main():
         # we infer 100 permutation tree due to the cost of time
     #if permutation == F, just the permutation datasets rather than permutation tree are used to estimate the significance.
         # we permute 500 times.
+    #This process is done by R code.
     if permutation == "T":
         permutationPath=outpath+"/temp"
         print "Reconstructing tree based on permutation data."
