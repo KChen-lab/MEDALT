@@ -87,6 +87,7 @@ for (i in chrom){
 arm.band$length=arm.band$end-arm.band$start
 band.region$length=band.region$end-band.region$start
 refer.band$ID=paste(as.character(refer.band$V1),as.character(refer.band$V4),sep=":")
+
 #generate the bin position based on input copy number data
 print.noquote("LSA segmentation!")
 if (datatype=="D"){
@@ -118,6 +119,8 @@ ans$ID=paste(ans$seqnames,":",ans$name,sep="")
 ans$ID1=paste(ans$seqnames,"_",ans$end,sep = "")
 region$ID1=paste(region$chrom,"_",region$chrompos,sep="")
 ID=unique(ans$ID)
+
+#generate copy number matrix based on genome bandID
 newCNV=do.call(cbind,lapply(ID, function(id,data,ans,region){
   chrID=ans$ID1[ans$ID==id]
   index=match(chrID,region$ID1)
@@ -129,19 +132,29 @@ newCNV=do.call(cbind,lapply(ID, function(id,data,ans,region){
 },data=data,ans=ans,region))
 colnames(newCNV)=ID
 
-####lineage partitioning to define CFL
+#perform lineage speciation analysis
 print.noquote("Calculating CFL")
+
+#calculate the depth, the number of children nodes for each cell
 cell=union(as.character(celltree[,1]),as.character(celltree[,2]))
 cell=data.frame(cell=cell)
 cell$depth=sapply(as.character(cell$cell),depthFunction,cellTree=celltree)
 cell$subtreesize=sapply(as.character(cell$cell),subtreeSize,cellTree=celltree)
+
+#perform lineage speciation analysis for cells that the number of children is no less than 5.
 cell1=cell[cell$subtreesize>=5,]
 cell1=cell1[cell1$cell!="root",]
+
+#calculte CFL at genomic bin level
 Gscore=lapply(as.character(cell1$cell),lineageScore,newCNV,celltree)
 names(Gscore)=as.character(cell1$cell)
+
+#read genes from 11 oncogenic pathway for estimation of gene level
 pathwaygene=read.csv(paste(datapath,"/pathwaygene.txt",sep=""),sep="\t")
 index=match(pathwaygene$name,reference[,1])
 pathwaygene=data.frame(chr=reference[index[!is.na(index)],2],start=reference[index[!is.na(index)],3],end=reference[index[!is.na(index)],4],name=pathwaygene$name[!is.na(index)],pathway=pathwaygene$pathway[!is.na(index)])
+
+#Gene level copy number profile
 if (datatype=="D"){
   cnv=read.csv(CNVfile,sep="\t")
   oncogenicCNV=do.call(cbind,lapply(1:dim(pathwaygene)[1],geneCNAfunction,pathwaygene=pathwaygene,ancestorCNV=cnv,generegion=region))
@@ -162,18 +175,23 @@ index=apply(oncogenicCNV,2,function(x){
   }
 })
 oncogenicCNV=oncogenicCNV[,index==1]
+
+#Calculate CFL at gene level
 geneGscore=lapply(as.character(cell1$cell),lineageScore,oncogenicCNV,celltree)
 names(geneGscore)=as.character(cell1$cell)
 realres=list(cell=cell1,bandGscore=Gscore,geneGscore=geneGscore)
-#############permutation
+
+#do calculation for permutation dataset
 print.noquote("Calculating permutation CFL")
 if (length(args) < 8){
+  #if there was no permutation tree, calculate CFL in permutation dataset based on real tree structure
   times=500
   permuteres=lapply(1:times,function(j,data,ID,ans,datatype,pathwaygene,generegion,reference){
     score=permuteScore(data,ID,ans,datatype,pathwaygene,generegion=region,reference)
     return(score)
   },data,ID,ans,datatype,pathwaygene,generegion=region,reference)
-}else if (length(args)==8){
+}else if (length(args)==8
+  #if there are permutation trees, calculate CFL in permutation dataset based on permuted tree structure
   permutefile=list.files(permutationPath)
   permutefile=permutefile[grep("celltree",permutefile)]
   times=length(permutefile)
@@ -182,16 +200,20 @@ if (length(args) < 8){
     permuteres=lapply(permutefile,permuteTreeScore,ID,ans,datatype,pathwaygene,generegion=region,reference,permutationPath)
   }
 }
-#####Estimate emperical p value
+
+#Estimate emperical p value
 print.noquote("Estimate emperical p value")
 realcell=realres$cell
 realband=realres$bandGscore
 realgene=realres$geneGscore
 pvalue=lapply(1:dim(realcell)[1],significanceLevel,realband,realgene,permuteres,realcell)
 if (length(args) < 8){
+  #estimate emperical p value at genomic bin and gene level
+  #if there is no permutation tree, default cutoff of pvalue is 0.01.
   bandsig=CollectAsso(pvalue,cutoff=0.01,celltree,realcell)$bandres
   genesig=CollectAsso(pvalue,cutoff=0.01,celltree,realcell)$generes
 }else if (length(args)==8){
+  #if there are permutation trees, default cutoff of pvalue is 0.05.
   bandsig=CollectAsso(pvalue,cutoff=0.05,celltree,realcell)$bandres
   genesig=CollectAsso(pvalue,cutoff=0.05,celltree,realcell)$generes
 }
