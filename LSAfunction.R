@@ -297,7 +297,12 @@ significanceLevel <- function(x,realband,realgene,permuteres,realcell){
   return(list(Aband,Dband,Agene,Dgene))
 }
 
-
+# function RefineCNA and MergeLSA: remove redunt lineages
+#if two lineags are associated with the same CNA and one lineage is another's subtree, we remove the sublineage.
+#res: significant CNA as well as corresponding lineage
+#ancestor: ancestor node of the lineage
+#celltree: inferred tree based on real data
+#realcell: all cells from real tree. A dataframe includes cellID, corresponding depth in the tree and the number of children
 RefineCNA <- function(res,ancestor,celltree,realcell){
   res1=c()
   res$ID=paste(res$cell,res$region,res$Score,sep=":")
@@ -354,7 +359,6 @@ RefineCNA <- function(res,ancestor,celltree,realcell){
   res1=res1[order(res1$depth),1:6]
   return(res1)
 }
-
 MergeLSA <- function(res1,celltree,realcell){
   region=table(as.character(res1$region))
   region1=names(region[region==1])
@@ -426,6 +430,11 @@ MergeLSA <- function(res1,celltree,realcell){
   return(fres)
 }
 
+#collect significant CNA and corresponding lineage
+#significance: pvalue matrix
+#cutoff: p value cutoff
+#celltree: lineage tree
+#realcell: all cell data frame with depth and the number of children in the tree
 CollectAsso <- function(significance,cutoff,celltree,realcell){
   bandsig=c()
   genesig=c()
@@ -478,6 +487,11 @@ CollectAsso <- function(significance,cutoff,celltree,realcell){
   return(list(bandres=unique(bandsig1),generes=unique(genesig1)))
 }
 
+#parallele evolution test at gene level
+#sigres: significant gene
+#permuteres: results based on permutation process which is a list object
+#type: D or R
+#realcell: all cells from real tree. A dataframe includes cellID, corresponding depth in the tree and the number of children
 GenePara <- function(sigres,permuteres,type,realcell){
   paraGene=table(as.character(sigres$region))
   paraGene=paraGene[paraGene>1]
@@ -538,6 +552,12 @@ GenePara <- function(sigres,permuteres,type,realcell){
   return(paraGene)
 }
 
+#merge adgacent significant genomic bin
+#node: cellID
+#sigCNA: significant CNA associated with corresponding node
+#band.region: chromosomal band
+#arm.region: chromosomal arm region
+#refer.band: refernece genome position
 mergeCNA <- function(node,sigCNA,band.region,arm.band,refer.band){
   refineSigregion <- function(i,psub,type,refer.band,arm.band,subres,subregion){
     if (dim(psub)[1]==1){
@@ -604,6 +624,7 @@ mergeCNA <- function(node,sigCNA,band.region,arm.band,refer.band){
   return(subres)
 }
 
+#calculate the depeth of cell in the tree
 depthFunction <- function(cell,cellTree){
   root=setdiff(as.character(cellTree[,1]),as.character(cellTree[,2]))
   if (cell == root){
