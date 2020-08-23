@@ -644,6 +644,7 @@ depthFunction <- function(cell,cellTree){
   }
 }
 
+#calculate the depeth of cell in the tree
 heightFunction <- function(cell,cellTree){
   leaf=setdiff(as.character(cellTree[,2]),as.character(cellTree[,1]))
   if (cell %in% leaf){
@@ -665,7 +666,7 @@ heightFunction <- function(cell,cellTree){
 }
 
 
-###calculated subtree size for each node
+###calculated subtree size for each cell in the tree
 subtreeSize <- function(cell,cellTree){
   leaf=setdiff(as.character(cellTree[,2]),as.character(cellTree[,1]))
   if (cell %in% leaf){
@@ -686,7 +687,7 @@ subtreeSize <- function(cell,cellTree){
   }
 }
 
-#####Searching subtree rooted at node
+#####Searching subtree rooted at the node in the celltree
 splitTree <- function(node,celltree){
   child=node
   while(1){
@@ -701,7 +702,7 @@ splitTree <- function(node,celltree){
   return(child)
 }
 
-#######Calculate CFL score
+#Calculate CFL score for the lineage rooted at node
 lineageScore <- function(node,newCNV,celltree){
   child=splitTree(node,celltree)
   index=match(child,row.names(newCNV))
@@ -728,7 +729,7 @@ lineageScore <- function(node,newCNV,celltree){
   return(Gscore)
 }
 
-###Gene level copy number profile
+#extract Gene level copy number profile
 geneCNAfunction<-function(k,pathwaygene,ancestorCNV,generegion){
   gene=pathwaygene[k,]
   chr=as.character(gene[1,1])
@@ -771,8 +772,8 @@ geneCNAfunction<-function(k,pathwaygene,ancestorCNV,generegion){
     return(rep(NA,length=dim(ancestorCNV)[1]))
   }
 }
-####
 
+#find the ancestor for the significant CNA in the tree
 CNAconnect <- function(sigCNA,celltree){
   node=unique(sigCNA[,5:6])
   node=node[order(node$depth,decreasing = TRUE),]
@@ -810,6 +811,7 @@ CNAconnect <- function(sigCNA,celltree){
   return(CNAnetwork)
 }
 
+#merge adjacent bin at chromosomal band 
 CombineRegion <- function(node,newsig,refer.band){
   cellsig=c()
   subsig=newsig[newsig$cell==node,]
@@ -835,7 +837,7 @@ CombineRegion <- function(node,newsig,refer.band){
           if (k == dim(subsig1)[1]){
             end=k
             region=paste(subsig1$chr[start],":",subsig1$arm[start],subsig1$bandID[start],"-",subsig1$bandID[end],sep="")
-            tempsig=data.frame(region=region,Score=mean(subsig1$Score[start:end]),pvalue=mean(subsig1$pvalue[start:end]),adjustp=mean(subsig1$adjustp[start:end]),cell=subsig1$cell[start],depth=subsig1$depth[start],subtreesize=subsig1$subtreesize[start])
+            tempsig=data.frame(region=region,Score=mean(subsig1$Score[start:end]),pvalue=mean(subsig1$pvalue[start:end]),adjustp=mean(subsig1$adjustp[start:end]),cell=as.character(subsig1$cell)[start],depth=subsig1$depth[start],subtreesize=subsig1$subtreesize[start])
             newsig11=rbind(newsig11,tempsig)
           }
         }else{
@@ -844,7 +846,7 @@ CombineRegion <- function(node,newsig,refer.band){
             newsig11=rbind(newsig11,subsig1[k,1:7])
           }else{
             region=paste(subsig1$chr[start],":",subsig1$arm[start],subsig1$bandID[start],"-",subsig1$bandID[end],sep="")
-            tempsig=data.frame(region=region,Score=mean(subsig1$Score[start:end]),pvalue=mean(subsig1$pvalue[start:end]),adjustp=mean(subsig1$adjustp[start:end]),cell=subsig1$cell[start],depth=subsig1$depth[start],subtreesize=subsig1$subtreesize[start])
+            tempsig=data.frame(region=region,Score=mean(subsig1$Score[start:end]),pvalue=mean(subsig1$pvalue[start:end]),adjustp=mean(subsig1$adjustp[start:end]),cell=as.character(subsig1$cell)[start],depth=subsig1$depth[start],subtreesize=subsig1$subtreesize[start])
             newsig11=rbind(newsig11,tempsig)
           }
           k=k+1
@@ -885,7 +887,7 @@ CombineRegion <- function(node,newsig,refer.band){
             if (k == dim(subsig22)[1]){
               end=k
               region=paste(subsig22$chr[start],":",subsig22$arm[start],subsig22$band[start],"-",subsig22$band[end],sep="")
-              tempsig=data.frame(region=region,Score=mean(subsig22$Score[start:end]),pvalue=mean(subsig22$pvalue[start:end]),adjustp=subsig22$adjustp[start:end],cell=subsig22$cell[start],depth=subsig22$depth[start],subtreesize=subsig22$subtreesize[start])
+              tempsig=data.frame(region=region,Score=mean(subsig22$Score[start:end]),pvalue=mean(subsig22$pvalue[start:end]),adjustp=subsig22$adjustp[start:end],cell=as.character(subsig22$cell)[start],depth=subsig22$depth[start],subtreesize=subsig22$subtreesize[start])
               newsig22=rbind(newsig22,tempsig)
             }
           }else{
@@ -894,7 +896,7 @@ CombineRegion <- function(node,newsig,refer.band){
               newsig22=rbind(newsig22,subsig22[k,1:7])
             }else{
               region=paste(subsig22$chr[start],":",subsig22$arm[start],subsig22$band[start],"-",subsig22$band[end],sep="")
-              tempsig=data.frame(region=region,Score=mean(subsig22$Score[start:end]),pvalue=mean(subsig22$pvalue[start:end]),adjustp=subsig22$adjustp[start:end],cell=subsig22$cell[start],depth=subsig22$depth[start],subtreesize=subsig22$subtreesize[start])
+              tempsig=data.frame(region=region,Score=mean(subsig22$Score[start:end]),pvalue=mean(subsig22$pvalue[start:end]),adjustp=subsig22$adjustp[start:end],cell=as.characetr(subsig22$cell)[start],depth=subsig22$depth[start],subtreesize=subsig22$subtreesize[start])
               newsig22=rbind(newsig22,tempsig)
             }
             k=k+1
