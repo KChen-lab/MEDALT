@@ -1,6 +1,9 @@
 #all R functions to perform lineage speciation analysis
 
 #calculate copy number of genomic bin based on the number of genes (delt)
+#refgene: refernece Genome
+#newdata: CNV at gene level
+#delt: the number of adjacent genes merge
 BinCNV<-function(refgene,newdata,delt){
   index=match(colnames(newdata),as.character(refgene[,1]))
   newgene=data.frame(gene=colnames(newdata),chr=refgene[index,2],start=refgene[index,3],end=refgene[index,4])
@@ -83,6 +86,9 @@ permuteGene <- function(CNV,reference){
 }
 
 #estimate permute CNV at chromosome band level
+#ID: chromosome band ID and position
+#permuteCNV: permuted CNV data
+#ans: the correspondence between input genomic bin and chromosome band
 permuteID <- function(ID,permuteCNV,ans){
   permuteCNV1=do.call(cbind,lapply(ID, function(id,cnv,ans){
     chrID=ans$ID1[ans$ID==id]
@@ -102,6 +108,9 @@ permuteID <- function(ID,permuteCNV,ans){
 #ID:genome band ID
 #ans: correspondence between gemonic bin and band ID
 #datatype: D(scDNA-seq or scRNA-seq)
+#generegion: genomic bin position
+#refernece: reference Genome
+#celltree: real tree
 permuteScore <- function(data,ID,ans,datatype,pathwaygene,generegion,reference,celltree){
   if (datatype == "D"){
     permuteCNV=permuteSeg(data,generegion)
@@ -135,7 +144,15 @@ permuteScore <- function(data,ID,ans,datatype,pathwaygene,generegion,reference,c
 }
 
 
-#permutation tree
+#Calculate CFL in permutation dataset based on permuted tree strucure
+#permutetree: infered tree based on permutation dataset
+#ID:genome band ID
+#ans: correspondence between gemonic bin and band ID
+#datatype: D(scDNA-seq or scRNA-seq)
+#pathwaygene: defined test gene set
+#generegion: genomic bin position
+#refernece: reference Genome
+#permutationPath: the path store permutation dataset and permutation tree
 permuteTreeScore <- function(permutetree,ID,ans,datatype,pathwaygene,generegion,reference,permutationPath){
   j=strsplit(permutetree,split="[.]")[[1]][2]
   if (datatype == "D"){
@@ -177,6 +194,10 @@ permuteTreeScore <- function(permutetree,ID,ans,datatype,pathwaygene,generegion,
   return(list(cell=permutecell1,bandGscore=Gscore,geneGscore=geneGscore))
 }
 
+#Estimate emperical pvalue of observed value
+#observe: CFL from real tree
+#background: CFL from permuted tree
+#type: AMP or DEL
 PermuteSig <- function(observe,background,type){
   index=match(names(observe),colnames(background))
   observe=observe[!is.na(index)]
@@ -209,7 +230,12 @@ PermuteSig <- function(observe,background,type){
   return(pvalue)
 }
 
-
+#define significant CNA
+#x: the cut off of lineage size, default 5
+#realband: CFL at band level based on real tree
+#realgene: CFL at gene level based on real tree
+#permuteres: CFL results based on permutation process which is a list object
+#realcell: all cells from real tree. A dataframe includes cellID, corresponding depth in the tree and the number of children
 significanceLevel <- function(x,realband,realgene,permuteres,realcell){
   sizecutoff=realcell$subtreesize[realcell$cell==as.character(realcell$cell)[x]]
   if ("cell" %in% names(permuteres[[1]])){
