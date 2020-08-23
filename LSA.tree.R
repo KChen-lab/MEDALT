@@ -1,3 +1,15 @@
+#main R function to perform linegae speciation analysis
+#input: 1. the path of R script LSAfunction.R
+#       2. input copy number profile from scDNA-seq or scRNA-seq
+#       3. the infer tree file based on integer copy number profile
+#       4. integer copy number matrix
+#       5. output path of results
+#       6. datatype "D" (DNA-seq) or "R" (RNA-seq)
+#       7. genome version: hg19 or hg38
+#       8. optional. If you have the permutation tree, input the path
+
+
+#Check the installation of dependency packages: HelloRangers and igraph
 r = getOption("repos")
 r["CRAN"] = "http://cran.us.r-project.org"
 options(repos = r)
@@ -9,12 +21,10 @@ if (!"HelloRanges" %in% installed.packages()){
 if (!"igraph" %in% installed.packages()){
   install.packages("igraph")
 }
-#if (!"DescTools" %in% installed.packages()){
-#  install.packages("DescTools")
-#}
 library(HelloRanges)
 library(igraph)
-#library(DescTools)
+
+#read input
 args<-commandArgs(T)
 datapath=args[1]
 inputfile=args[2]
@@ -28,7 +38,8 @@ if (length(args)==8){
 }
 source(paste(datapath,"/LSAfunction.R",sep=""))
 set.seed(1234)
-######Plot cell tree
+
+#Plot cell tree figure
 print.noquote("Visualization MEDALT!")
 celltree=read.csv(treeName,sep="\t")
 nodes=data.frame(id=union(as.character(celltree[,1]),as.character(celltree[,2])),size=5)
@@ -38,7 +49,8 @@ net <- graph_from_data_frame(d=celltree, vertices=nodes, directed=T)
 pdf(file=paste(outpath,"/singlecell.tree.pdf",sep=""),width = 5,height = 5,useDingbats = F)
 plot(net, vertex.frame.color=NA,vertex.color=nodes$color,edge.arrow.size=.2,vertex.label=NA)
 dev.off()
-######input
+
+#input
 data = read.csv(inputfile,sep="\t",header = TRUE)
 if (hg=="hg19"){
   reference=read.csv(paste(datapath,"/gencode_v19_gene_pos.txt",sep=""),sep="\t",header=F)
