@@ -189,8 +189,8 @@ if (length(args) < 8){
   permuteres=lapply(1:times,function(j,data,ID,ans,datatype,pathwaygene,generegion,reference,celltree){
     score=permuteScore(data,ID,ans,datatype,pathwaygene,generegion=region,reference,celltree)
     return(score)
-  },data,ID,ans,datatype,pathwaygene,generegion=region,reference)
-}else if (length(args)==8
+  },data,ID,ans,datatype,pathwaygene,generegion=region,reference,celltree)
+}else if (length(args)==8{
   #if there are permutation trees, calculate CFL in permutation dataset based on permuted tree structure
   permutefile=list.files(permutationPath)
   permutefile=permutefile[grep("celltree",permutefile)]
