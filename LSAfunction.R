@@ -896,7 +896,7 @@ CombineRegion <- function(node,newsig,refer.band){
               newsig22=rbind(newsig22,subsig22[k,1:7])
             }else{
               region=paste(subsig22$chr[start],":",subsig22$arm[start],subsig22$band[start],"-",subsig22$band[end],sep="")
-              tempsig=data.frame(region=region,Score=mean(subsig22$Score[start:end]),pvalue=mean(subsig22$pvalue[start:end]),adjustp=subsig22$adjustp[start:end],cell=as.characetr(subsig22$cell)[start],depth=subsig22$depth[start],subtreesize=subsig22$subtreesize[start])
+              tempsig=data.frame(region=region,Score=mean(subsig22$Score[start:end]),pvalue=mean(subsig22$pvalue[start:end]),adjustp=subsig22$adjustp[start:end],cell=as.character(subsig22$cell)[start],depth=subsig22$depth[start],subtreesize=subsig22$subtreesize[start])
               newsig22=rbind(newsig22,tempsig)
             }
             k=k+1
