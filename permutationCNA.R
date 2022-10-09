@@ -11,8 +11,15 @@ datapath=args[1]
 inputfile=args[2]
 datatype=args[3]
 permutationPath=args[4]
-if (length(args)==5){
+if (length(args)==6){
   delt=args[5]
+  hg=args[6]
+  if (hg == "hg19"){
+    reference=read.csv(paste(datapath,"/gencode_v19_gene_pos.txt",sep=""),sep="\t",header=F)
+  }else{
+    reference=read.csv(paste(datapath,"/gencode_v38_gene_pos.txt",sep=""),sep="\t",header=F)
+
+  }
 }
 set.seed(1234)
 source(paste(datapath,"/LSAfunction.R",sep=""))
@@ -20,7 +27,6 @@ data = read.csv(inputfile,sep="\t",header = TRUE)
 
 #refernce genome to check if input data are ordered
 #this is only used for RNA-seq data
-reference=read.csv(paste(datapath,"/gencode_v19_gene_pos.txt",sep=""),sep="\t",header=F)
 if (datatype=="R"){
   data=round(data*2)#integer copy number
 }

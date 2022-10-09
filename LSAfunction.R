@@ -8,7 +8,10 @@ BinCNV<-function(refgene,newdata,delt){
   index=match(colnames(newdata),as.character(refgene[,1]))
   newgene=data.frame(gene=colnames(newdata),chr=refgene[index,2],start=refgene[index,3],end=refgene[index,4])
   newgene[,2]=as.character(newgene[,2])
-  newgene[newgene[,2]=="chrX",2]="chr23"
+  newgene=newgene[!is.na(newgene[,2]),]
+  if ("chrX" %in% newgene[,2]|"chrx" %in% newgene[,2]){
+    newgene[newgene[,2]=="chrX",2]="chr23"
+  }
   chrom=paste("chr",c(1:23),sep="")
   chro=as.character(newgene$chr)
   chrom=intersect(chrom,chro)
