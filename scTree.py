@@ -68,9 +68,9 @@ def main():
     filename=getPath(filename)
     hg=options.Genome
     if not options.Output:
-    	outpath=currentPath
+        outpath=currentPath
     else:
-    	outpath=options.Output
+        outpath=options.Output
         outpath=getPath(outpath)
     os.system("mkdir -p "+outpath)
     os.chdir(outpath)
